@@ -169,27 +169,27 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 ```md
 ### F-001: 简短问题标题
 
-- Status: Open
-- Severity: Medium
-- Impact: ...
-- Evidence: ...
-- Recommended Fix: ...
+- **Status:** Open
+- **Severity:** Medium
+- **Impact:** ...
+- **Evidence:** ...
+- **Recommended Fix:** ...
 ```
 
-当 `Status` 不是 `Open` 时, 必须在 `Status` 下添加一级缩进的 `Resolution` 子项:
+字段名必须使用粗体加冒号格式, 例如 `**Status:** Open`. 当 `Status` 不是 `Open` 时, 必须在 `Status` 下添加一级缩进的 `Resolution` 子项:
 
 ```md
-- Status: Resolved
-  - Resolution: ...
+- **Status:** Resolved
+  - **Resolution:** ...
 ```
 
 字段顺序固定为:
 
-1. `Status`
-2. `Severity`
-3. `Impact`
-4. `Evidence`
-5. `Recommended Fix`
+1. `**Status:**`
+2. `**Severity:**`
+3. `**Impact:**`
+4. `**Evidence:**`
+5. `**Recommended Fix:**`
 
 `Recommended Fix` 在 `Open` 时必填. 当 `Status` 是 `Resolved` 或 `Won't Fix` 时, 可以保留原建议, 但不要求更新它.
 

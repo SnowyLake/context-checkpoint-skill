@@ -70,7 +70,7 @@
 审阅章节含义:
 
 - `Goal Completion`: 说明 `Current Goal` 是 `Completed`, `Partially Completed`, `Not Completed` 还是 `Unclear`, 并简要解释证据.
-- `Findings`: 按严重度排序列出实际被审阅工作中的具体问题. 包括实现缺陷, 逻辑缺口, 边界问题, 行为风险, 遗漏验证, 项目文件冲突, 或被审阅会话创建, 修改, 删除, 移动, 或以其他方式引用的文件中的不一致. 每条 finding 必须使用 `F-001` 形式的稳定 ID, 并包含 `Status`, `Severity`, `Impact`, `Evidence` 和 `Recommended Fix`. 如果检查相关文件后没有发现具体工作问题, 明确说明.
+- `Findings`: 按严重度排序列出实际被审阅工作中的具体问题. 包括实现缺陷, 逻辑缺口, 边界问题, 行为风险, 遗漏验证, 项目文件冲突, 或被审阅会话创建, 修改, 删除, 移动, 或以其他方式引用的文件中的不一致. 每条 finding 必须使用 `F-001` 形式的稳定 ID, 并包含 `Status`, `Severity`, `Impact`, `Evidence` 和 `Recommended Fix`. 字段名必须使用 `**Status:**` 形式的粗体标签. 如果检查相关文件后没有发现具体工作问题, 明确说明.
 - `Checkpoint Quality`: 评估 `CONTEXT.md` 和可选 `HISTORY.md` 是否足够可靠, 能否支撑未来 restore, handoff 或 review. 包括 `Work Artifacts` 是否指向相关工作范围. 除非仅涉及 checkpoint 的问题直接阻塞实际工作评估, 否则放在这里.
 - `Open Questions`: 列出无法从 checkpoint 文件和当前项目文件回答的问题.
 - `Summary`: 给出简洁, 可行动的结论.
