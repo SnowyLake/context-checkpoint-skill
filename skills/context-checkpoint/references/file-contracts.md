@@ -2,10 +2,11 @@
 
 ## 目录
 
+- [TOC 规则](#toc-规则)
 - [CONTEXT.md](#contextmd)
-- [Work Artifacts](#work-artifacts)
+  - [Work Artifacts](#work-artifacts)
 - [HISTORY.md](#historymd)
-- [Handoff Entry](#handoff-entry)
+  - [Handoff Entry](#handoff-entry)
 - [REVIEW.md](#reviewmd)
   - [Finding 格式](#finding-格式)
   - [Finding 状态](#finding-状态)
@@ -13,12 +14,22 @@
 
 本说明文件定义所有 `context-checkpoint` 命令共享的 checkpoint 和 review 文件结构. 命令说明文件指向这里, 不重复这些结构.
 
+## TOC 规则
+
+`CONTEXT.md`, `HISTORY.md` 和 `REVIEW.md` 必须包含 `## Table of Contents`. TOC 是 checkpoint 和 review 文件结构的一部分, 放在一级标题之后, 正文二级章节之前.
+
+TOC 必须列出文件中的所有二级章节. 模板中的 `- ...` 表示按实际章节生成 TOC, 不是要保留的字面内容. 每次追加, 删除或重命名章节时, 必须同步更新 TOC.
+
 ## CONTEXT.md
 
 `CONTEXT.md` 只保存当前仍然有效, 并且会影响未来工作的当前信息. 使用以下结构:
 
 ```md
 # CONTEXT.md
+
+## Table of Contents
+
+- ...
 
 ## Current Goal
 
@@ -54,9 +65,11 @@ Section 含义:
 - `Relevant Files`: 与理解当前会话直接相关的文件, 文件夹或资源.
 - `Work Artifacts`: 本会话创建, 修改, 删除或移动的主要文件. 它是导航索引, 不是完整 diff, 不是完整事实来源, 也不是 handoff 复制白名单.
 
+每次创建或更新 `CONTEXT.md` 时, 必须同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级章节.
+
 执行 `handoff` 时, 目标 `CONTEXT.md` 必须在 `Current State` 下包含一条简洁来源说明, 标明源会话文件夹. 不要把已复制 / 已丢弃文件列表, 用户要求的修正或详细引用改写记录放入 `CONTEXT.md`.
 
-## Work Artifacts
+### Work Artifacts
 
 使用以下 `Work Artifacts` 条目结构:
 
@@ -81,6 +94,10 @@ Section 含义:
 ```md
 # HISTORY.md
 
+## Table of Contents
+
+- ...
+
 ## {YYYY-MM-DD} - {entry-title}
 
 ### Summary
@@ -101,10 +118,11 @@ Section 含义:
 - 使用 `YYYY-MM-DD` 格式的实际条目日期.
 - 使用简短描述性的条目标题.
 - 新增一个二级条目. 不要使用重复的 `Entry Date` 或 `Entry Title` 标题.
+- 同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级历史条目.
 - 显式标记已拒绝和已暂缓项, 例如 `[Rejected]` 或 `[Deferred]`.
 - 显式标记假设, 例如 `[Verified]` 或 `[Unverified]`.
 
-## Handoff Entry
+### Handoff Entry
 
 每次 `handoff` 都向目标 `HISTORY.md` 追加一个 handoff 条目. 使用以下结构:
 
@@ -139,6 +157,10 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 ```md
 # REVIEW.md
 
+## Table of Contents
+
+- ...
+
 ## Reviewed Session
 
 ## Review Date
@@ -159,6 +181,8 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 - `Reviewed Session`: 本次 review 指向的被审阅会话文件夹.
 - `Review Date`: `YYYY-MM-DD` 格式的审阅日期.
 - `Goal Completion`, `Findings`, `Checkpoint Quality`, `Open Questions`, `Summary`: 与 `review.md` 中定义的审阅输出章节含义相同.
+
+每次创建或更新 `REVIEW.md` 时, 必须同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级章节.
 
 `REVIEW.md` 是 review 产物, 不是 checkpoint 文件. `restore` 将其视为导航提示, 不视为当前状态. `handoff` 默认不复制源会话文件夹的 `REVIEW.md`, 因为它审阅的是源会话文件夹, 不是目标会话文件夹. 如果用户明确要求保留源 `REVIEW.md`, 必须把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder}.md`, 不得复制为目标 `REVIEW.md`, 也不得改写其中的 `Reviewed Session`.
 
