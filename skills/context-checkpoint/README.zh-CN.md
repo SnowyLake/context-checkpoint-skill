@@ -150,6 +150,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 不创建缺失的源会话文件夹 checkpoint 文件.
 - 不搜索其他文件夹, 除非用户明确要求 discovery.
 - 复制前先分类源会话文件夹内的 non-checkpoint artifacts.
+- 不把源 `REVIEW.md` 复制为目标 `REVIEW.md`. 如果用户明确要求保留, 只能把它重命名为历史 review 产物, 且不改写 `Reviewed Session`.
 - 在目标会话文件夹 `CONTEXT.md` 写入简短 provenance note.
 - 向目标会话文件夹 `HISTORY.md` 追加 handoff 审计条目.
 

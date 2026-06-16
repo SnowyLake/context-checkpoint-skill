@@ -150,6 +150,7 @@ Behavior:
 - Does not create missing source checkpoint files.
 - Does not search other folders unless the user explicitly asks for discovery.
 - Classifies source-folder non-checkpoint artifacts before copying.
+- Does not copy the source `REVIEW.md` as the target `REVIEW.md`. If the user explicitly asks to preserve it, keeps it only as a renamed historical review artifact without rewriting `Reviewed Session`.
 - Writes a concise provenance note in target `CONTEXT.md`.
 - Appends a handoff audit entry to target `HISTORY.md`.
 
