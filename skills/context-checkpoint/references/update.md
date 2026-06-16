@@ -1,43 +1,43 @@
-# Update Command
+# update 命令
 
-## Table of Contents
+## 目录
 
-- [Session Folder Resolution](#session-folder-resolution)
-- [Access Mode](#access-mode)
-- [Workflow](#workflow)
-- [Output Style](#output-style)
+- [会话文件夹解析](#会话文件夹解析)
+- [访问模式](#访问模式)
+- [工作流](#工作流)
+- [输出风格](#输出风格)
 
-This reference covers the `update` command only. Apply it together with the `Global Invariants` in `SKILL.md`. Read `file-contracts.md` before writing or validating `CONTEXT.md`, `HISTORY.md`, or `Work Artifacts`.
+本说明文件只覆盖 `update` 命令. 使用时需要同时应用 `SKILL.md` 中的 `全局不变量`. 写入或校验 `CONTEXT.md`, `HISTORY.md` 或 `Work Artifacts` 前, 必须先读取 `file-contracts.md`.
 
-## Session Folder Resolution
+## 会话文件夹解析
 
-Resolve the current session folder:
+解析当前会话文件夹:
 
-1. Determine whether the current conversation already has a session folder.
-2. If a matching folder exists, reuse it.
-3. If the current folder is unclear, ask the user whether to specify an existing session folder or create a new session folder.
-4. Create a new folder only when the user chooses to create one or no existing session folder can be identified from the current conversation.
+1. 判断当前对话是否已经有会话文件夹.
+2. 如果存在匹配的文件夹, 复用它.
+3. 如果当前文件夹不明确, 询问用户是指定一个已有会话文件夹, 还是创建一个新会话文件夹.
+4. 只有当用户选择创建, 或无法从当前对话识别任何既有会话文件夹时, 才创建新文件夹.
 
-## Access Mode
+## 访问模式
 
-- May read related project files and existing checkpoint files in the current session folder.
-- May create the current session folder when needed.
-- May write only `CONTEXT.md` and `HISTORY.md` in the current session folder.
-- Must not create or modify other artifacts unless the user explicitly asks for additional files.
+- 可以读取相关项目文件, 以及当前会话文件夹中已有的 checkpoint 文件.
+- 必要时可以创建当前会话文件夹.
+- 只能写入当前会话文件夹中的 `CONTEXT.md` 和 `HISTORY.md`.
+- 不得创建或修改其他产物, 除非用户明确要求额外文件.
 
-## Workflow
+## 工作流
 
-1. Resolve the current session folder.
-2. Read existing `CONTEXT.md` and `HISTORY.md` if present.
-3. Compare checkpoint content with the current conversation state and project files.
-4. Rewrite `CONTEXT.md` as a clean current-state snapshot. Do not mechanically append history.
-5. Maintain `Work Artifacts` in `CONTEXT.md` every time. It may be empty when no work artifacts exist.
-6. Append one new entry to `HISTORY.md`. Do not merge new history into old entries.
-7. Preserve useful existing history. Do not delete old entries unless the user explicitly requests cleanup.
-8. Move stale process notes, rejected approaches, superseded assumptions, and decision rationale out of `CONTEXT.md` and into the new `HISTORY.md` entry when still useful.
+1. 解析当前会话文件夹.
+2. 如果已有 `CONTEXT.md` 和 `HISTORY.md`, 读取它们.
+3. 对比 checkpoint 内容, 当前对话状态和项目文件.
+4. 将 `CONTEXT.md` 重写为干净的当前状态快照. 不要机械追加历史.
+5. 每次都维护 `CONTEXT.md` 中的 `Work Artifacts`. 没有工作产物时可以为空.
+6. 向 `HISTORY.md` 追加一个新条目. 不要把新历史合并进旧条目.
+7. 保留有用的既有历史. 除非用户明确要求清理, 不要删除旧条目.
+8. 将过期过程记录, 已拒绝方案, 已被取代的假设和决策依据从 `CONTEXT.md` 移入新的 `HISTORY.md` 条目, 前提是它们仍有用.
 
-`update` must create or update both `CONTEXT.md` and `HISTORY.md`. See `file-contracts.md` for both file structures.
+`update` 必须创建或更新 `CONTEXT.md` 和 `HISTORY.md`. 两个文件的结构见 `file-contracts.md`.
 
-## Output Style
+## 输出风格
 
-Keep the user-facing response brief. Mention the session folder and the files updated.
+面向用户的回复保持简短. 提及会话文件夹和已更新的文件.

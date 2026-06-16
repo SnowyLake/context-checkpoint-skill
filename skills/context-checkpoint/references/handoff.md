@@ -1,117 +1,117 @@
-# Handoff Command
+# handoff 命令
 
-## Table of Contents
+## 目录
 
-- [Session Folder Resolution](#session-folder-resolution)
-- [Access Mode](#access-mode)
-- [Workflow](#workflow)
-- [Source Guardrails](#source-guardrails)
-- [Non-Checkpoint Artifact Handling](#non-checkpoint-artifact-handling)
-- [Target Checkpoint Handling](#target-checkpoint-handling)
-- [Output Style](#output-style)
+- [会话文件夹解析](#会话文件夹解析)
+- [访问模式](#访问模式)
+- [工作流](#工作流)
+- [源会话文件夹保护规则](#源会话文件夹保护规则)
+- [非 Checkpoint 产物处理](#非-checkpoint-产物处理)
+- [目标 Checkpoint 处理](#目标-checkpoint-处理)
+- [输出风格](#输出风格)
 
-This reference covers the `handoff` command only. Apply it together with the `Global Invariants` in `SKILL.md`. Read `file-contracts.md` before writing or validating target `CONTEXT.md`, target `HISTORY.md`, handoff entries, or `Work Artifacts`.
+本说明文件只覆盖 `handoff` 命令. 使用时需要同时应用 `SKILL.md` 中的 `全局不变量`. 写入或校验目标 `CONTEXT.md`, 目标 `HISTORY.md`, handoff 条目或 `Work Artifacts` 前, 必须先读取 `file-contracts.md`.
 
-## Session Folder Resolution
+## 会话文件夹解析
 
-`handoff` resolves two session folders:
+`handoff` 解析两个会话文件夹:
 
-- Source session folder: the old session folder that `handoff` reads from.
-- Target session folder: the current conversation's session folder that `handoff` writes to.
+- 源会话文件夹: `handoff` 读取的旧会话文件夹.
+- 目标会话文件夹: `handoff` 写入的当前对话会话文件夹.
 
-When resolving the source session folder:
+解析源会话文件夹时:
 
-1. If the user specifies a source session folder, use it.
-2. If the user does not specify a source session folder, ask the user to specify an existing session folder.
-3. Do not create a source session folder.
+1. 如果用户指定了源会话文件夹, 使用它.
+2. 如果用户没有指定源会话文件夹, 要求用户指定一个已有会话文件夹.
+3. 不创建源会话文件夹.
 
-When resolving the target session folder:
+解析目标会话文件夹时:
 
-1. If the current conversation already has a clear session folder, use it.
-2. If the target folder is unclear, ask the user whether to specify an existing session folder or create a new session folder.
-3. Create a new target folder only when the user chooses to create one or no existing target session folder can be identified from the current conversation.
-4. Do not use the source session folder as the target session folder unless the user explicitly chooses to write handoff results back to the source folder.
+1. 如果当前对话已经有明确的会话文件夹, 使用它.
+2. 如果目标文件夹不明确, 询问用户是指定一个已有会话文件夹, 还是创建一个新会话文件夹.
+3. 只有当用户选择创建, 或无法从当前对话识别任何既有目标会话文件夹时, 才创建新目标文件夹.
+4. 不要把源会话文件夹用作目标会话文件夹, 除非用户明确选择把 handoff 结果写回源文件夹.
 
-## Access Mode
+## 访问模式
 
-- Source session folder is read-only.
-- Target session folder is readable and writable.
-- May copy only non-checkpoint artifacts located inside the source session folder.
-- Must not copy project files or any file outside the source session folder, even when `Work Artifacts` references them.
-- Must not modify project files unless the user explicitly asks for follow-up work.
+- 源会话文件夹只读.
+- 目标会话文件夹可读写.
+- 只可以复制源会话文件夹内部的非 checkpoint 产物.
+- 不得复制项目文件或源会话文件夹之外的任何文件, 即使 `Work Artifacts` 引用了它们.
+- 不得修改项目文件, 除非用户明确要求后续工作.
 
-## Workflow
+## 工作流
 
-1. Resolve the source session folder.
-2. Verify that the source session folder exists.
-3. Verify that the source session folder contains `CONTEXT.md`.
-4. If source validation fails, stop and report the issue. Do not create checkpoint files, create target folders, classify artifacts, copy files, or search other folders.
-5. Resolve the target session folder.
-6. Read source `CONTEXT.md`.
-7. Read source `HISTORY.md` when available.
-8. Read `Work Artifacts` to quickly understand the prior work scope.
-9. Scan other files in the source session folder.
-10. Classify non-checkpoint files inside the source session folder as still-relevant artifacts or historical/stale artifacts.
-11. Use the classification to decide which non-checkpoint source-folder artifacts to copy or discard without waiting for user confirmation.
-12. Record copied and discarded artifacts in the handoff entry and final output so the user can request follow-up corrections if needed.
-13. Create or update the target session folder.
-14. Write target `CONTEXT.md` as the rebuilt current-state snapshot.
-15. Write target `HISTORY.md` by preserving useful source history and appending a handoff entry.
-16. Copy still-relevant artifacts from the source session folder into the target session folder.
-17. Rewrite references in target `CONTEXT.md`, target `HISTORY.md`, and copied artifacts from source paths to target paths where needed.
-18. Verify copied files and rewritten references.
-19. Report the source folder, target folder, copied files, discarded files, and files updated.
+1. 解析源会话文件夹.
+2. 确认源会话文件夹存在.
+3. 确认源会话文件夹包含 `CONTEXT.md`.
+4. 如果源校验失败, 停止并报告问题. 不要创建 checkpoint 文件, 创建目标文件夹, 分类产物, 复制文件, 或搜索其他文件夹.
+5. 解析目标会话文件夹.
+6. 读取源 `CONTEXT.md`.
+7. 当源 `HISTORY.md` 存在时读取它.
+8. 读取 `Work Artifacts`, 用于快速理解之前的工作范围.
+9. 扫描源会话文件夹中的其他文件.
+10. 将源会话文件夹内部的非 checkpoint 文件分类为仍然相关的产物或历史 / 过期产物.
+11. 根据分类决定复制或丢弃哪些非 checkpoint 源文件夹产物, 不等待用户确认.
+12. 在 handoff 条目和最终输出中记录已复制和已丢弃产物, 方便用户按需要求后续修正.
+13. 创建或更新目标会话文件夹.
+14. 将目标 `CONTEXT.md` 写为重建后的当前状态快照.
+15. 写入目标 `HISTORY.md`, 保留有用的源历史, 并追加一个 handoff 条目.
+16. 将仍然相关的产物从源会话文件夹复制到目标会话文件夹.
+17. 必要时将目标 `CONTEXT.md`, 目标 `HISTORY.md` 和已复制产物中的引用从源路径改写为目标路径.
+18. 校验已复制文件和已改写引用.
+19. 报告源文件夹, 目标文件夹, 已复制文件, 已丢弃文件和已更新文件.
 
-## Source Guardrails
+## 源会话文件夹保护规则
 
-- Source files are read-only.
-- `CONTEXT.md` is required for `handoff`.
-- If the source session folder does not exist, stop and report the issue.
-- If the source session folder exists but does not contain `CONTEXT.md`, stop and report the missing `CONTEXT.md`.
-- If the source session folder contains only `HISTORY.md` or other generated documents, stop and report the missing `CONTEXT.md`.
-- When source validation fails, do not create checkpoint files, infer missing checkpoint content, create a target folder, classify artifacts, copy files, or search other folders.
+- 源文件只读.
+- `handoff` 要求源会话文件夹中必须存在 `CONTEXT.md`.
+- 如果源会话文件夹不存在, 停止并报告问题.
+- 如果源会话文件夹存在但不包含 `CONTEXT.md`, 停止并报告缺少 `CONTEXT.md`.
+- 如果源会话文件夹只包含 `HISTORY.md` 或其他生成文档, 停止并报告缺少 `CONTEXT.md`.
+- 当源校验失败时, 不要创建 checkpoint 文件, 推断缺失 checkpoint 内容, 创建目标文件夹, 分类产物, 复制文件, 或搜索其他文件夹.
 
-## Non-Checkpoint Artifact Handling
+## 非 Checkpoint 产物处理
 
-- Classify only non-checkpoint files located inside the source session folder.
-- Do not copy project files or any file outside the source session folder.
-- Classify source-folder artifacts using source `CONTEXT.md` sections such as `Relevant Files`, `Work Artifacts`, `TODO`, `Next Actions`, and `Known Risks`.
-- Treat source-folder files that still affect future decisions or implementation as still-relevant artifacts.
-- Treat rejected, deferred, superseded, stale, or purely historical process documents as historical/stale artifacts.
-- Do not stop to ask for confirmation before copying or discarding non-checkpoint source-folder artifacts.
-- Record copied and discarded artifacts in the handoff entry and final output so the user can review and request follow-up corrections.
-- `Discarded` means not copied into the target session folder. Never delete source files.
+- 只分类源会话文件夹内部的非 checkpoint 文件.
+- 不要复制项目文件或源会话文件夹之外的任何文件.
+- 使用源 `CONTEXT.md` 中的 `Relevant Files`, `Work Artifacts`, `TODO`, `Next Actions` 和 `Known Risks` 等章节来分类源文件夹产物.
+- 仍会影响未来决策或实现的源文件夹文件视为仍然相关的产物.
+- 已拒绝, 已暂缓, 已被取代, 过期或纯历史过程文档视为历史 / 过期产物.
+- 复制或丢弃非 checkpoint 源文件夹产物前, 不停下来请求确认.
+- 在 handoff 条目和最终输出中记录已复制和已丢弃产物, 方便用户审阅并要求后续修正.
+- `Discarded` 表示没有复制到目标会话文件夹. 绝不删除源文件.
 
-## Target Checkpoint Handling
+## 目标 Checkpoint 处理
 
-- Target `CONTEXT.md` must be a clean current-state snapshot, not a mechanical copy of source `CONTEXT.md`.
-- Target `CONTEXT.md` must include one concise provenance note under `Current State` naming the source session folder.
-- Detailed handoff records belong in target `HISTORY.md`, not target `CONTEXT.md`.
-- Target `HISTORY.md` must preserve useful source history and append one handoff entry.
-- The handoff entry must record source folder, target folder, copied checkpoint files, copied artifacts, discarded artifacts, reference rewrites, user-requested corrections, missing optional source files, and unresolved uncertainty. See `file-contracts.md` for the handoff entry structure.
+- 目标 `CONTEXT.md` 必须是干净的当前状态快照, 不是源 `CONTEXT.md` 的机械复制.
+- 目标 `CONTEXT.md` 必须在 `Current State` 下包含一条简洁来源说明, 标明源会话文件夹.
+- 详细 handoff records 属于目标 `HISTORY.md`, 不属于目标 `CONTEXT.md`.
+- 目标 `HISTORY.md` 必须保留有用的源历史, 并追加一个 handoff 条目.
+- Handoff entry 必须记录源文件夹, 目标文件夹, 已复制 checkpoint 文件, 已复制产物, 已丢弃产物, 引用改写, 用户要求的修正, 缺失的可选源文件和未解决的不确定性. Handoff entry 结构见 `file-contracts.md`.
 
-## Output Style
+## 输出风格
 
-First include a brief handoff result summary:
+先包含一段简短 handoff 结果摘要:
 
-- Source session folder
-- Target session folder
-- Updated checkpoint files
-- Copied artifacts
-- Discarded artifacts
-- Reference rewrites
-- Unresolved risks or open questions
+- 源会话文件夹
+- 目标会话文件夹
+- 已更新 checkpoint 文件
+- 已复制产物
+- 已丢弃产物
+- 引用改写
+- 未解决风险或开放问题
 
-Then summarize the rebuilt session state instead of repeating all of `HISTORY.md`. Include:
+然后总结重建后的会话状态, 不要重复整份 `HISTORY.md`. 包含:
 
-- Current goal
-- Current state
-- Confirmed decisions
-- Active constraints
-- Known risks
-- Open questions
+- 当前目标, 对应 `Current Goal`
+- 当前状态, 对应 `Current State`
+- 已确认决策, 对应 `Confirmed Decisions`
+- 活跃约束, 对应 `Active Constraints`
+- 已知风险, 对应 `Known Risks`
+- 开放问题, 对应 `Open Questions`
 - TODO
-- Next actions
-- Relevant files
-- Work artifacts
-- Source and confidence notes for reconstructed state
+- 下一步行动, 对应 `Next Actions`
+- 相关文件, 对应 `Relevant Files`
+- 工作产物, 对应 `Work Artifacts`
+- 重建状态的信息来源和置信度说明

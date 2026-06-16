@@ -5,89 +5,87 @@ description: Manage session context for long-running, multi-session, handoff-bas
 
 # Context Checkpoint
 
-## Table of Contents
+## 目录
 
-- [Overview](#overview)
-- [Command Selection](#command-selection)
-- [Execution](#execution)
-- [Global Invariants](#global-invariants)
-- [Language and Formatting](#language-and-formatting)
+- [概览](#概览)
+- [命令选择](#命令选择)
+- [执行](#执行)
+- [全局不变量](#全局不变量)
+- [语言和格式](#语言和格式)
 
-## Overview
+## 概览
 
-Provide exactly four capabilities:
+提供四个能力:
 
-- `update`: Create or refresh the current session checkpoint in `CONTEXT.md` and `HISTORY.md`.
-- `restore`: Rebuild the current session context from the current session checkpoint files or checkpoint files in an explicitly specified session folder.
-- `handoff`: Rebuild the current conversation state from another session folder's checkpoint files, then save the rebuilt state into the current conversation's session folder.
-- `review`: Objectively review the actual work referenced by checkpoint files in the current session folder or an explicitly specified session folder, then write the result to `REVIEW.md` in that folder, without restoring or continuing implementation.
+- `update`: 在 `CONTEXT.md` 和 `HISTORY.md` 中创建或刷新当前会话 checkpoint.
+- `restore`: 从当前会话 checkpoint 文件, 或显式指定的会话文件夹中的 checkpoint 文件重建当前会话上下文.
+- `handoff`: 从另一个会话文件夹的 checkpoint 文件重建当前对话状态, 然后把重建后的状态保存到当前对话的会话文件夹.
+- `review`: 客观审阅当前会话文件夹或显式指定会话文件夹中 checkpoint 指向的实际工作内容, 然后把结果写入该文件夹的 `REVIEW.md`, 不恢复上下文, 也不继续实现.
 
-Keep this skill narrow. Do not manage project wikis, create unrelated documents, or add broader session-management commands.
+## 命令选择
 
-## Command Selection
+优先响应命令式请求, 或明确点名 `$context-checkpoint` 的自然语言请求. 当用户清楚要求 checkpoint 更新, 恢复, 接管或审阅时, 也允许完全隐式的自然语言请求.
 
-Prefer command-style requests or explicit natural-language requests that name `$context-checkpoint`. Fully implicit natural-language requests are allowed when they clearly ask for checkpoint update, restore, handoff, or review.
+使用 `update` 的场景:
 
-Use `update` when:
+- 用户明确要求生成, 更新或刷新 checkpoint 文件.
+- 用户要求为 handoff 准备上下文, 或准备跨会话续接文件.
+- 用户要求把当前会话整理到 `CONTEXT.md` 和 `HISTORY.md`.
 
-- The user explicitly asks to generate, update, or refresh checkpoint files.
-- The user asks for handoff context or cross-session continuation files.
-- The user asks to organize the current session into `CONTEXT.md` and `HISTORY.md`.
+使用 `restore` 的场景:
 
-Use `restore` when:
+- 用户要求读取当前会话 checkpoint.
+- 用户要求从当前会话的 `CONTEXT.md` 和 `HISTORY.md` 恢复或重建会话上下文.
+- 用户要求从指定会话文件夹中的 checkpoint 文件恢复或重建会话上下文.
 
-- The user asks to read the current session checkpoint.
-- The user asks to restore or rebuild session context from the current session's `CONTEXT.md` and `HISTORY.md`.
-- The user asks to restore or rebuild session context from checkpoint files in a specified session folder.
+使用 `handoff` 的场景:
 
-Use `handoff` when:
+- 用户要求从另一个会话文件夹继续, 接管或重建上下文, 并把重建后的上下文写入当前会话文件夹.
+- 用户要求从更旧或不同的会话 checkpoint 重建当前对话, 并保存重建后的状态.
+- 用户要求把 checkpoint 上下文从 session A 迁移到 session B.
+- 新会话需要从另一个会话文件夹中的既有 checkpoint 接管, 并把重建后的 checkpoint 持久化到自己的会话文件夹.
 
-- The user asks to continue, take over, or reconstruct context from another session folder and write that rebuilt context into the current session folder.
-- The user asks to rebuild the current conversation from an older or different session checkpoint and save the rebuilt state.
-- The user asks to migrate checkpoint context from session A into session B.
-- A new session needs to take over from an existing checkpoint in another session folder and persist the rebuilt checkpoint into its own session folder.
+使用 `review` 的场景:
 
-Use `review` when:
+- 用户要求 review, 审阅, 评估, 检查或批评当前会话文件夹的实际工作内容.
+- 用户要求 review, 审阅, 评估, 检查或批评指定会话文件夹的实际工作内容.
+- 用户询问某个会话是否完成目标.
+- 用户询问某个会话的工作是否存在缺陷, 边界问题, 遗漏验证, 冲突或不一致.
+- 用户要求进行一次基于 checkpoint 导航的客观工作审阅, 且不恢复上下文, 不继续实现.
 
-- The user asks to review, audit, assess, inspect, or critique the current session folder's actual work.
-- The user asks to review, audit, assess, inspect, or critique a specified session folder's actual work.
-- The user asks whether a session completed its goal.
-- The user asks whether a session's work has defects, edge cases, missing validation, conflicts, or inconsistencies.
-- The user asks for an objective checkpoint-guided work review without restoring or continuing implementation.
+## 执行
 
-## Execution
+执行任何命令前, 先读取 `references/` 下对应的说明文件. 每个命令说明文件定义该命令的会话文件夹解析, 访问模式, 工作流和输出风格. 同时应用本文件中的 `全局不变量` 和命令说明文件. 不要在命令说明文件中重复路由逻辑或全局规则.
 
-Before running a command, read its reference file under `references/`. Each command reference defines that command's session folder resolution, access mode, workflow, and output style. Apply the `Global Invariants` in this file together with the command reference. Do not duplicate the routing logic or global rules inside the command references.
+任何命令只要会读取, 写入, 校验, 总结或输出 `CONTEXT.md`, `HISTORY.md`, `REVIEW.md`, `Work Artifacts` 或 handoff 条目, 都必须先读取 `references/file-contracts.md`. 当文件契约可用时, 不要凭记忆重建文件结构.
 
-Read `references/file-contracts.md` before any command reads, writes, validates, summarizes, or outputs `CONTEXT.md`, `HISTORY.md`, `REVIEW.md`, `Work Artifacts`, or handoff entries. Do not reconstruct file structures from memory when the file contracts are available.
+命令说明文件:
 
-Command references:
+- `references/update.md`: 刷新当前会话 checkpoint.
+- `references/restore.md`: 从 checkpoint 重建会话上下文.
+- `references/handoff.md`: 把 checkpoint 转移到当前会话文件夹.
+- `references/review.md`: 审阅 checkpoint 背后的实际工作内容, 并写入 `REVIEW.md`.
 
-- `references/update.md`: Refresh the current session checkpoint.
-- `references/restore.md`: Rebuild session context from a checkpoint.
-- `references/handoff.md`: Transfer a checkpoint into the current session folder.
-- `references/review.md`: Review the actual work behind a checkpoint and write `REVIEW.md`.
+共享文件契约:
 
-Shared file contracts:
+- `references/file-contracts.md`: `CONTEXT.md`, `HISTORY.md`, `REVIEW.md` 的结构, 包括 `Work Artifacts` 和 handoff 条目格式.
 
-- `references/file-contracts.md`: Structure of `CONTEXT.md`, `HISTORY.md`, and `REVIEW.md`, including `Work Artifacts` and handoff entry formats.
+## 全局不变量
 
-## Global Invariants
+这些规则适用于所有命令. 命令说明文件不应重复这些规则.
 
-These rules apply to every command. Command references must not repeat them.
+- checkpoint 文件存放在项目根目录的 `.agent-sessions/{YYYYMMDD}-{short-kebab-case-session-summary}/` 下. summary 片段使用小写 kebab-case, 并优先保持简洁.
+- 当会话文件夹不明确时, 不要检查 `.agent-sessions/` 来猜测语义匹配的文件夹, 除非用户明确要求发现或列出候选.
+- 当 checkpoint 文件与当前项目文件冲突时, 优先相信当前项目文件.
+- 只把 `Work Artifacts` 当作导航索引. 它不是完整 diff, 不是事实来源, 也不是 handoff 复制白名单.
+- 不要执行 `TODO` 项, 修改项目文件, 或继续实现, 除非用户明确要求后续工作.
 
-- Store checkpoint files under the project root using `.agent-sessions/{YYYYMMDD}-{short-kebab-case-session-summary}/`. Use lowercase kebab-case for the summary segment and prefer concise session names.
-- When a session folder is unclear, do not inspect `.agent-sessions/` to guess a semantically matching folder unless the user explicitly asks for discovery or listing.
-- When checkpoint files conflict with current project files, prefer current project files.
-- Treat `Work Artifacts` as a navigation index only. It is not a complete diff, not a source of truth, and not a handoff copy allowlist.
-- Do not execute TODO items, modify project files, or continue implementation unless the user explicitly asks for follow-up work.
+## 语言和格式
 
-## Language and Formatting
+写入 checkpoint Markdown 文件或审阅输出时:
 
-When writing checkpoint Markdown files or review output:
-
-- Keep the required file names and section headings from `references/file-contracts.md` unless project-level instructions explicitly override them.
-- Treat English headings in this skill as structural contracts, not as the default body language.
-- Choose body text language according to project-level or user-level instructions first.
-- If no project-level or user-level language instruction exists, use the current conversation language for body text.
-- Apply this rule to all checkpoint Markdown written by this skill, including `CONTEXT.md`, `HISTORY.md`, handoff entries, and `REVIEW.md`.
+- 保留 `references/file-contracts.md` 中要求的文件名和章节标题, 除非项目级指令明确覆盖它们.
+- 把本 skill 中的英文标题视为结构契约, 不视为正文默认语言.
+- 正文语言优先遵循项目级或用户级指令.
+- 如果没有项目级或用户级语言指令, 正文使用当前对话语言.
+- 这条规则适用于本 skill 写入的所有 checkpoint Markdown, 包括 `CONTEXT.md`, `HISTORY.md`, handoff 条目和 `REVIEW.md`.
