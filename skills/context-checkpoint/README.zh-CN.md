@@ -62,8 +62,8 @@ Checkpoint 文件用于重建会话上下文:
 这个 skill 提供四个核心功能:
 
 - `update`: 创建或刷新当前会话 checkpoint.
-- `restore`: 从当前会话 checkpoint 或指定会话文件夹中的 checkpoint 文件重建会话上下文.
-- `handoff`: 从另一个会话 checkpoint 重建会话上下文, 并将重建后的 checkpoint 保存到当前会话文件夹.
+- `restore`: 只读地从当前会话 checkpoint 或指定会话文件夹中的 checkpoint 文件恢复会话上下文.
+- `handoff`: 从另一个会话 checkpoint 接管, 迁移或分支上下文, 并将重建后的 checkpoint 保存到当前会话文件夹.
 - `review`: 审阅当前会话文件夹或指定会话文件夹中 checkpoint 所指向的实际工作内容, 并将结果写入该文件夹的 `REVIEW.md`.
 
 ## 使用示例
@@ -124,6 +124,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 
 - 未提供路径时使用当前会话文件夹.
 - 提供路径时使用指定文件夹作为恢复来源.
+- 如果用户只说从某个 checkpoint 或会话文件夹"重建上下文", 且没有要求保存, 迁移, 分支, 接管或写入目标会话文件夹, 默认视为 `restore`.
 - 如果当前会话已有 checkpoint 文件, 且用户指定了另一个会话文件夹, 则停止执行.
 - 如果存在 `CONTEXT.md`, 优先读取它.
 - 只有在需要历史背景时读取 `HISTORY.md`.
@@ -147,6 +148,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 要求源会话文件夹必须包含 `CONTEXT.md`.
 - 源会话文件夹校验失败时停止执行.
 - 如果目标会话文件夹已经存在 `CONTEXT.md` 或 `HISTORY.md`, 则停止执行, 不读取, 合并, 复制或修改任一 checkpoint.
+- 需要用户明确表达保存, 迁移, 分支, 接管或写入目标会话文件夹的意图. 只出现"重建"或 `rebuild` 一词不足以选择 `handoff`.
 - 不创建缺失的源会话文件夹 checkpoint 文件.
 - 不搜索其他文件夹, 除非用户明确要求 discovery.
 - 复制前先分类源会话文件夹内的 non-checkpoint artifacts.

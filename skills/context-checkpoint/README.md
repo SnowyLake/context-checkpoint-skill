@@ -62,8 +62,8 @@ Checkpoint files rebuild session context:
 The skill provides four core capabilities:
 
 - `update`: Create or refresh the current session checkpoint.
-- `restore`: Rebuild session context from the current session checkpoint or checkpoint files in a specified session folder.
-- `handoff`: Rebuild session context from another session checkpoint, then save the rebuilt checkpoint into the current session folder.
+- `restore`: Read-only restore of session context from the current session checkpoint or checkpoint files in a specified session folder.
+- `handoff`: Take over, migrate, or branch context from another session checkpoint, then save the rebuilt checkpoint into the current session folder.
 - `review`: Review the actual work referenced by checkpoint files in the current session folder or a specified session folder, then write the result to `REVIEW.md` in that folder.
 
 ## Usage Examples
@@ -124,6 +124,7 @@ Behavior:
 
 - Uses the current session folder when no path is provided.
 - Uses the specified folder as the restore source when a path is provided.
+- Treats plain "rebuild context from this checkpoint or session folder" requests as `restore` unless the user also asks to save, migrate, branch, take over, or write into a target session folder.
 - Stops if the current session already has checkpoint files and the user specifies a different session folder.
 - Reads `CONTEXT.md` first when available.
 - Reads `HISTORY.md` only when historical background is needed.
@@ -147,6 +148,7 @@ Behavior:
 - Requires the source session folder to contain `CONTEXT.md`.
 - Stops when source validation fails.
 - Stops when the target session folder already contains `CONTEXT.md` or `HISTORY.md`, without reading, merging, copying, or modifying either checkpoint.
+- Requires an explicit save, migrate, branch, take-over, or target-write intent. The word `rebuild` alone is not enough to select `handoff`.
 - Does not create missing source checkpoint files.
 - Does not search other folders unless the user explicitly asks for discovery.
 - Classifies source-folder non-checkpoint artifacts before copying.

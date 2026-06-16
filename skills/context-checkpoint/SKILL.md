@@ -18,8 +18,8 @@ description: Manage session context for long-running, multi-session, handoff-bas
 提供四个能力:
 
 - `update`: 在 `CONTEXT.md` 和 `HISTORY.md` 中创建或刷新当前会话 checkpoint.
-- `restore`: 从当前会话 checkpoint 文件, 或显式指定的会话文件夹中的 checkpoint 文件重建当前会话上下文.
-- `handoff`: 从另一个会话文件夹的 checkpoint 文件重建当前对话状态, 然后把重建后的状态保存到当前对话的会话文件夹.
+- `restore`: 以只读方式从当前会话 checkpoint 文件, 或显式指定会话文件夹中的 checkpoint 文件恢复当前会话上下文.
+- `handoff`: 从另一个会话文件夹接管, 迁移或派生上下文, 然后把结果保存到当前对话的会话文件夹.
 - `review`: 客观审阅当前会话文件夹或显式指定会话文件夹中 checkpoint 指向的实际工作内容, 然后把结果写入该文件夹的 `REVIEW.md`, 不恢复上下文, 也不继续实现.
 
 ## 命令选择
@@ -35,15 +35,18 @@ description: Manage session context for long-running, multi-session, handoff-bas
 使用 `restore` 的场景:
 
 - 用户要求读取当前会话 checkpoint.
-- 用户要求从当前会话的 `CONTEXT.md` 和 `HISTORY.md` 恢复或重建会话上下文.
-- 用户要求从指定会话文件夹中的 checkpoint 文件恢复或重建会话上下文.
+- 用户要求以只读方式从当前会话的 `CONTEXT.md` 和 `HISTORY.md` 恢复或重建会话上下文.
+- 用户要求以只读方式从指定会话文件夹中的 checkpoint 文件恢复或重建会话上下文.
+- 用户只说从某个 checkpoint 或会话文件夹"恢复"或"重建"上下文, 但没有要求接管, 迁移, 分支, 保存或写入当前 / 目标会话文件夹.
 
 使用 `handoff` 的场景:
 
-- 用户要求从另一个会话文件夹继续, 接管或重建上下文, 并把重建后的上下文写入当前会话文件夹.
-- 用户要求从更旧或不同的会话 checkpoint 重建当前对话, 并保存重建后的状态.
+- 用户明确要求从另一个会话文件夹接管, 迁移或分支上下文.
+- 用户要求从另一个会话文件夹恢复或重建上下文, 并把结果写入当前会话文件夹或指定目标会话文件夹.
+- 用户要求从更旧或不同的会话 checkpoint 接管当前对话, 并保存接管后的状态.
 - 用户要求把 checkpoint 上下文从 session A 迁移到 session B.
 - 新会话需要从另一个会话文件夹中的既有 checkpoint 接管, 并把重建后的 checkpoint 持久化到自己的会话文件夹.
+- 不要仅因为用户使用"重建"或 `rebuild` 一词就选择 `handoff`; 只有当用户同时表达写入, 保存, 迁移, 接管或分支到目标会话文件夹时才使用 `handoff`.
 
 使用 `review` 的场景:
 
