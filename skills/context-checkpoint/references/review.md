@@ -25,6 +25,7 @@
 - 只能写被审阅会话文件夹中的 `REVIEW.md`. 这是 `review` 唯一允许的写入例外.
 - 不得修改被审阅的 `CONTEXT.md`, 被审阅的 `HISTORY.md`, 其他被审阅会话文件夹产物或项目文件, 除非用户明确要求后续工作.
 - 用最新审阅结果覆盖被审阅会话文件夹中已有的 `REVIEW.md`.
+- 默认不自动归档旧 `REVIEW.md`.
 - 始终输出审阅结果, 并写入 `REVIEW.md`.
 - 将 checkpoint 文件视为审阅简报和导航索引. 除非用户明确要求审阅 checkpoint 文件本身, 不要把 checkpoint 文件质量作为主要审阅目标.
 
@@ -49,7 +50,7 @@
 17. 旧 `Open` finding 如果仍成立, 保留为 `Open`. 如果不再成立, 标记为 `Resolved`, 添加 `Resolution`, 并在本次 `REVIEW.md` 中保留一轮. 如果用户或项目决策明确不修复, 标记为 `Won't Fix`, 添加 `Resolution`.
 18. 已是 `Resolved` 或 `Won't Fix` 的旧 findings 默认不继续保留在最新 `REVIEW.md`, 除非本次 review 需要说明清理结果.
 19. 新发现的问题使用下一个稳定 finding ID, 并按 `file-contracts.md` 中的 finding 格式写入.
-20. 将审阅结果写入被审阅会话文件夹的 `REVIEW.md`, 覆盖任何已有 `REVIEW.md`, 并同时在回复中输出.
+20. 将审阅结果写入被审阅会话文件夹的 `REVIEW.md`, 覆盖任何已有 `REVIEW.md`, 不自动归档旧 review, 并同时在回复中输出.
 
 ## 输出风格
 

@@ -179,7 +179,7 @@ Behavior:
 - Uses stable `F-001`-style IDs for findings, and includes status, severity, impact, evidence, and recommended fix for each finding.
 - When an existing `REVIEW.md` is present, re-verifies old `Open` findings. Findings that still apply remain `Open`, findings that no longer apply are marked `Resolved` and kept for one review cycle, and explicitly declined fixes are marked `Won't Fix`.
 - Places checkpoint-only quality issues under `Checkpoint Quality`, not `Findings`, unless they directly prevent assessing the actual work.
-- Writes `REVIEW.md` in the reviewed session folder, overwriting any previous `REVIEW.md`, and also returns the review in the response.
+- Writes `REVIEW.md` in the reviewed session folder, overwriting any previous `REVIEW.md` without automatically archiving old reviews, and also returns the review in the response.
 
 ## Reference Workflows
 

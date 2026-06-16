@@ -179,7 +179,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 每条 finding 使用 `F-001` 形式的稳定 ID, 并包含状态, 严重度, 影响, 证据和推荐修复方案.
 - 如果已有 `REVIEW.md`, 会重新验证旧的 `Open` findings. 仍成立的保留, 不再成立的标记为 `Resolved` 并保留一轮, 明确不修复的标记为 `Won't Fix`.
 - Checkpoint 自身质量问题放入 `Checkpoint Quality`, 不放入 `Findings`, 除非它直接导致无法评估实际工作.
-- 将 `REVIEW.md` 写入被审阅会话文件夹, 覆盖此前的 `REVIEW.md`, 并同时在回复中输出 review.
+- 将 `REVIEW.md` 写入被审阅会话文件夹, 覆盖此前的 `REVIEW.md`, 不自动归档旧 review, 并同时在回复中输出 review.
 
 ## 参考工作流
 
