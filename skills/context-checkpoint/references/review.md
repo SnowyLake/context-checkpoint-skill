@@ -45,7 +45,11 @@
 13. 不要把普通 checkpoint 文件质量问题列为 `Findings`. 将 checkpoint 清晰度, 新鲜度, 缺失章节或内部一致性问题放入 `Checkpoint Quality`, 除非它们直接阻止目标完成度评估或隐藏工作范围.
 14. 只有当用户要求审阅的目标, 或被审阅会话的 `Current Goal`, 明确是创建或更新 checkpoint 文件时, 才把 `CONTEXT.md` 和 `HISTORY.md` 作为主要工作产物审阅.
 15. 不要将会话上下文 restore 成当前活跃工作上下文.
-16. 将审阅结果写入被审阅会话文件夹的 `REVIEW.md`, 覆盖任何已有 `REVIEW.md`, 并同时在回复中输出.
+16. 如果被审阅会话文件夹中已有 `REVIEW.md`, 读取其中现有 findings. 对 `Open` findings 按当前工程事实重新验证, 尽量保留仍成立问题的原 finding ID.
+17. 旧 `Open` finding 如果仍成立, 保留为 `Open`. 如果不再成立, 标记为 `Resolved`, 添加 `Resolution`, 并在本次 `REVIEW.md` 中保留一轮. 如果用户或项目决策明确不修复, 标记为 `Won't Fix`, 添加 `Resolution`.
+18. 已是 `Resolved` 或 `Won't Fix` 的旧 findings 默认不继续保留在最新 `REVIEW.md`, 除非本次 review 需要说明清理结果.
+19. 新发现的问题使用下一个稳定 finding ID, 并按 `file-contracts.md` 中的 finding 格式写入.
+20. 将审阅结果写入被审阅会话文件夹的 `REVIEW.md`, 覆盖任何已有 `REVIEW.md`, 并同时在回复中输出.
 
 ## 输出风格
 
@@ -66,7 +70,7 @@
 审阅章节含义:
 
 - `Goal Completion`: 说明 `Current Goal` 是 `Completed`, `Partially Completed`, `Not Completed` 还是 `Unclear`, 并简要解释证据.
-- `Findings`: 按严重度排序列出实际被审阅工作中的具体问题. 包括实现缺陷, 逻辑缺口, 边界问题, 行为风险, 遗漏验证, 项目文件冲突, 或被审阅会话创建, 修改, 删除, 移动, 或以其他方式引用的文件中的不一致. 每条 finding 都包含严重度, 证据, 影响和建议修复方式. 如果检查相关文件后没有发现具体工作问题, 明确说明.
+- `Findings`: 按严重度排序列出实际被审阅工作中的具体问题. 包括实现缺陷, 逻辑缺口, 边界问题, 行为风险, 遗漏验证, 项目文件冲突, 或被审阅会话创建, 修改, 删除, 移动, 或以其他方式引用的文件中的不一致. 每条 finding 必须使用 `F-001` 形式的稳定 ID, 并包含 `Status`, `Severity`, `Impact`, `Evidence` 和 `Recommended Fix`. 如果检查相关文件后没有发现具体工作问题, 明确说明.
 - `Checkpoint Quality`: 评估 `CONTEXT.md` 和可选 `HISTORY.md` 是否足够可靠, 能否支撑未来 restore, handoff 或 review. 包括 `Work Artifacts` 是否指向相关工作范围. 除非仅涉及 checkpoint 的问题直接阻塞实际工作评估, 否则放在这里.
 - `Open Questions`: 列出无法从 checkpoint 文件和当前项目文件回答的问题.
 - `Summary`: 给出简洁, 可行动的结论.

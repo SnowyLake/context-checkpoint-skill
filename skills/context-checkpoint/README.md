@@ -55,7 +55,7 @@ Checkpoint files rebuild session context:
 
 `REVIEW.md` stores the latest review result for a session folder. It is created by `review` and may be read by `restore` as a navigation hint.
 
-`REVIEW.md` is not a checkpoint file. Its findings reflect the work state at review time and must be re-verified against current project files before follow-up work.
+`REVIEW.md` is not a checkpoint file. Its findings have stable IDs, statuses, and severities. `Open` findings must be re-verified against current project files before follow-up work.
 
 ## Capabilities
 
@@ -127,7 +127,7 @@ Behavior:
 - Stops if the current session already has checkpoint files and the user specifies a different session folder.
 - Reads `CONTEXT.md` first when available.
 - Reads `HISTORY.md` only when historical background is needed.
-- Surfaces `REVIEW.md` findings as open issues to re-verify when that file exists.
+- Skips `Resolved` and `Won't Fix` findings in `REVIEW.md`, verifies `Open` findings within their referenced scope, and surfaces findings that still match current project facts.
 - Reports missing or partial checkpoint files instead of guessing.
 - Prioritizes current project files over conflicting checkpoint content.
 
@@ -146,6 +146,7 @@ Behavior:
 
 - Requires the source session folder to contain `CONTEXT.md`.
 - Stops when source validation fails.
+- Stops when the target session folder already contains `CONTEXT.md` or `HISTORY.md`, without reading, merging, copying, or modifying either checkpoint.
 - Does not create missing source checkpoint files.
 - Does not search other folders unless the user explicitly asks for discovery.
 - Classifies source-folder non-checkpoint artifacts before copying.
@@ -172,7 +173,8 @@ Behavior:
 - Reviews the actual referenced work, such as modified project files, generated artifacts, tests, configuration, or documentation.
 - First checks whether the session completed `Current Goal`.
 - Then checks for defects, logic gaps, edge cases, missing validation, conflicts, or inconsistencies.
-- Includes severity, evidence, impact, and recommended fix for each finding.
+- Uses stable `F-001`-style IDs for findings, and includes status, severity, impact, evidence, and recommended fix for each finding.
+- When an existing `REVIEW.md` is present, re-verifies old `Open` findings. Findings that still apply remain `Open`, findings that no longer apply are marked `Resolved` and kept for one review cycle, and explicitly declined fixes are marked `Won't Fix`.
 - Places checkpoint-only quality issues under `Checkpoint Quality`, not `Findings`, unless they directly prevent assessing the actual work.
 - Writes `REVIEW.md` in the reviewed session folder, overwriting any previous `REVIEW.md`, and also returns the review in the response.
 
@@ -294,6 +296,8 @@ One session folder is used as the read-only source session folder, while the cur
 ### Restore Conflict Guard
 
 If the current conversation already has checkpoint files and the user tries to `restore` a different session folder, `restore` stops instead of mixing two context lines. Use `handoff` for migration or use the same shared session folder for collaboration.
+
+`handoff` also protects existing checkpoint files in the target session folder. If the target session folder already contains `CONTEXT.md` or `HISTORY.md`, `handoff` stops and the user should choose a new empty target session folder.
 
 ```text
 [Current session already has checkpoint]

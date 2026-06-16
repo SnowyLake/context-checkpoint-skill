@@ -29,7 +29,7 @@ description: Manage session context for long-running, multi-session, handoff-bas
 使用 `update` 的场景:
 
 - 用户明确要求生成, 更新或刷新 checkpoint 文件.
-- 用户要求为 handoff 准备上下文, 或准备跨会话续接文件.
+- 用户要求把当前会话保存为可供后续会话继续使用的 checkpoint.
 - 用户要求把当前会话整理到 `CONTEXT.md` 和 `HISTORY.md`.
 
 使用 `restore` 的场景:

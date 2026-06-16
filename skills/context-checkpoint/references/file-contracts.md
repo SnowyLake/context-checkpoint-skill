@@ -7,6 +7,9 @@
 - [HISTORY.md](#historymd)
 - [Handoff Entry](#handoff-entry)
 - [REVIEW.md](#reviewmd)
+  - [Finding 格式](#finding-格式)
+  - [Finding 状态](#finding-状态)
+  - [Severity 范围](#severity-范围)
 
 本说明文件定义所有 `context-checkpoint` 命令共享的 checkpoint 和 review 文件结构. 命令说明文件指向这里, 不重复这些结构.
 
@@ -158,3 +161,55 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 - `Goal Completion`, `Findings`, `Checkpoint Quality`, `Open Questions`, `Summary`: 与 `review.md` 中定义的审阅输出章节含义相同.
 
 `REVIEW.md` 是 review 产物, 不是 checkpoint 文件. `restore` 和 `handoff` 将其视为导航提示, 不视为当前状态. `handoff` 像处理其他非 checkpoint 源文件夹产物一样分类它.
+
+### Finding 格式
+
+`REVIEW.md` 中的每条 finding 必须使用稳定 ID, 标题格式如下:
+
+```md
+### F-001: 简短问题标题
+
+- Status: Open
+- Severity: Medium
+- Impact: ...
+- Evidence: ...
+- Recommended Fix: ...
+```
+
+当 `Status` 不是 `Open` 时, 必须在 `Status` 下添加一级缩进的 `Resolution` 子项:
+
+```md
+- Status: Resolved
+  - Resolution: ...
+```
+
+字段顺序固定为:
+
+1. `Status`
+2. `Severity`
+3. `Impact`
+4. `Evidence`
+5. `Recommended Fix`
+
+`Recommended Fix` 在 `Open` 时必填. 当 `Status` 是 `Resolved` 或 `Won't Fix` 时, 可以保留原建议, 但不要求更新它.
+
+### Finding 状态
+
+`Status` 必须是以下值之一:
+
+- `Open`: 问题仍未解决, 需要继续关注或处理.
+- `Resolved`: 问题已解决, 并已按当前工程事实验证不再成立.
+- `Won't Fix`: 用户或项目决策明确不修复. 必须通过 `Resolution` 说明原因或决策依据.
+
+`restore` 只读 `REVIEW.md`, 不修改 finding 状态. 当已知问题修复完成, 或用户明确拒绝修复时, agent 可以在非 `restore` 流程中帮助更新对应 finding 状态. `update` 不更新 `REVIEW.md`.
+
+`Open` finding 如果被验证仍成立, 才可能作为待处理风险在后续 `update` 中纳入 `Known Risks`. `Won't Fix` finding 不进入 `Known Risks`; 它表示已接受的取舍, 应在后续 `update` 中纳入 `Confirmed Decisions`, 必要时在 `HISTORY.md` 记录理由.
+
+### Severity 范围
+
+`Severity` 必须是以下值之一:
+
+- `Blocker`: 阻断目标完成, 或会导致严重错误, 数据丢失, 上下文破坏等不可接受后果.
+- `High`: 高风险问题, 可能导致错误行为, 明显误导 agent, 或破坏关键工作流.
+- `Medium`: 真实问题, 影响明确, 但范围有限, 有规避方式, 或不立即阻断目标.
+- `Low`: 低风险问题, 多为表达清晰度, 文档一致性, 可维护性或轻微边界问题.

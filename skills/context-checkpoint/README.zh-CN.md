@@ -55,7 +55,7 @@ Checkpoint 文件用于重建会话上下文:
 
 `REVIEW.md` 保存一个会话文件夹的最新 review 结果. 它由 `review` 创建, 可被 `restore` 作为导航提示读取.
 
-`REVIEW.md` 不是 checkpoint 文件. 其中 findings 反映审阅时刻的工作状态, 后续工作前必须对照当前项目文件重新核验.
+`REVIEW.md` 不是 checkpoint 文件. 其中 findings 带有稳定 ID, 状态和严重度. 后续工作前必须对照当前项目文件重新核验 `Open` findings.
 
 ## 功能
 
@@ -127,7 +127,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 如果当前会话已有 checkpoint 文件, 且用户指定了另一个会话文件夹, 则停止执行.
 - 如果存在 `CONTEXT.md`, 优先读取它.
 - 只有在需要历史背景时读取 `HISTORY.md`.
-- 当存在 `REVIEW.md` 时, 将其中 findings 作为需要重新核验的 open issues.
+- 当存在 `REVIEW.md` 时, 跳过 `Resolved` 和 `Won't Fix` findings, 按指向范围尽力验证 `Open` findings, 并浮出仍符合当前工程事实的问题.
 - 缺少或只有部分 checkpoint 文件时明确报告, 不自行猜测.
 - 当项目文件和 checkpoint 内容冲突时, 优先相信当前项目文件.
 
@@ -146,6 +146,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 
 - 要求源会话文件夹必须包含 `CONTEXT.md`.
 - 源会话文件夹校验失败时停止执行.
+- 如果目标会话文件夹已经存在 `CONTEXT.md` 或 `HISTORY.md`, 则停止执行, 不读取, 合并, 复制或修改任一 checkpoint.
 - 不创建缺失的源会话文件夹 checkpoint 文件.
 - 不搜索其他文件夹, 除非用户明确要求 discovery.
 - 复制前先分类源会话文件夹内的 non-checkpoint artifacts.
@@ -172,7 +173,8 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 审阅实际被引用的工作内容, 例如被修改的项目文件, 生成产物, 测试, 配置或文档.
 - 首先判断会话是否完成 `Current Goal`.
 - 然后审查是否存在缺陷, 逻辑漏洞, 边界问题, 遗漏验证, 冲突或不一致.
-- 每条 finding 包含严重度, 证据, 影响和推荐修复方案.
+- 每条 finding 使用 `F-001` 形式的稳定 ID, 并包含状态, 严重度, 影响, 证据和推荐修复方案.
+- 如果已有 `REVIEW.md`, 会重新验证旧的 `Open` findings. 仍成立的保留, 不再成立的标记为 `Resolved` 并保留一轮, 明确不修复的标记为 `Won't Fix`.
 - Checkpoint 自身质量问题放入 `Checkpoint Quality`, 不放入 `Findings`, 除非它直接导致无法评估实际工作.
 - 将 `REVIEW.md` 写入被审阅会话文件夹, 覆盖此前的 `REVIEW.md`, 并同时在回复中输出 review.
 
@@ -294,6 +296,8 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 ### Restore 冲突保护
 
 如果当前会话已经有 checkpoint 文件, 又尝试 `restore` 另一个会话文件夹, `restore` 会停止, 避免混合两条上下文主线. 需要迁移时使用 `handoff`, 需要协作时共享同一个会话文件夹.
+
+`handoff` 写入目标会话文件夹时同样保护已有 checkpoint. 如果目标会话文件夹已经存在 `CONTEXT.md` 或 `HISTORY.md`, `handoff` 会停止, 需要改用新的空目标会话文件夹.
 
 ```text
 [当前会话已有 checkpoint]
