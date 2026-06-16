@@ -40,7 +40,7 @@
 .agent-sessions/{YYYYMMDD}-{short-kebab-case-session-summary}/
 ```
 
-当会话文件夹不明确时, skill 会根据请求的功能询问用户指定已有文件夹, 或确认是否创建新文件夹.
+解析会话文件夹时, skill 区分明确有, 明确没有和不确定三种状态. 明确有时复用已有文件夹, 明确没有且请求需要写入 checkpoint 时自动创建新文件夹, 不确定时询问用户指定已有文件夹或确认创建新文件夹.
 
 ### Checkpoint 文件
 

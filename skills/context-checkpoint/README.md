@@ -40,7 +40,7 @@ A session folder is the directory that stores one context line:
 .agent-sessions/{YYYYMMDD}-{short-kebab-case-session-summary}/
 ```
 
-The skill avoids guessing when a session folder is unclear. It asks the user to specify an existing folder or confirm a new one according to the requested capability.
+When resolving a session folder, the skill distinguishes identified, absent, and ambiguous states. It reuses an identified folder, creates a new folder when no usable folder signal exists and the request needs to write a checkpoint, and asks the user when the target is ambiguous.
 
 ### Checkpoint Files
 
