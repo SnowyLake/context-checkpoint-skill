@@ -3,11 +3,20 @@
 ## 目录
 
 - [会话文件夹解析](#会话文件夹解析)
+- [执行前检查](#执行前检查)
 - [访问模式](#访问模式)
 - [工作流](#工作流)
 - [输出风格](#输出风格)
 
 本说明文件只覆盖 `restore` 命令. 使用时需要同时应用 `SKILL.md` 中的 `全局不变量`. 解读或总结 `CONTEXT.md`, `HISTORY.md`, `REVIEW.md` 或 `Work Artifacts` 前, 必须先读取 `file-contracts.md`.
+
+## 执行前检查
+
+- 已读取 `SKILL.md` 的 `全局不变量`.
+- 已读取 `references/file-contracts.md`.
+- 已确认 restore 源会话文件夹.
+- 已确认本命令只读, 不写 checkpoint, `REVIEW.md` 或项目文件.
+- 如果存在 `REVIEW.md`, 只验证并浮出仍成立的 `Open` findings.
 
 ## 会话文件夹解析
 

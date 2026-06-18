@@ -3,11 +3,20 @@
 ## 目录
 
 - [会话文件夹解析](#会话文件夹解析)
+- [执行前检查](#执行前检查)
 - [访问模式](#访问模式)
 - [工作流](#工作流)
 - [输出风格](#输出风格)
 
 本说明文件只覆盖 `review` 命令. 使用时需要同时应用 `SKILL.md` 中的 `全局不变量`. 写入或校验 `REVIEW.md`, 或解读 `CONTEXT.md`, `HISTORY.md` 和 `Work Artifacts` 前, 必须先读取 `file-contracts.md`.
+
+## 执行前检查
+
+- 已读取 `SKILL.md` 的 `全局不变量`.
+- 已读取 `references/file-contracts.md`.
+- 已确认被审阅会话文件夹包含 `CONTEXT.md`.
+- 已确认审阅 checkpoint 导航到的实际工作内容.
+- 已确认本命令只写被审阅会话文件夹中的 `REVIEW.md`.
 
 ## 会话文件夹解析
 

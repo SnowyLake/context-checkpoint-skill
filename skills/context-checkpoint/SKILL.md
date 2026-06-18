@@ -60,9 +60,9 @@ description: Manage session context for long-running, multi-session, handoff-bas
 
 ## 执行
 
-执行任何命令前, 先读取 `references/` 下对应的说明文件. 每个命令说明文件定义该命令的会话文件夹解析, 访问模式, 工作流和输出风格. 同时应用本文件中的 `全局不变量` 和命令说明文件. 不要在命令说明文件中重复路由逻辑或全局规则.
+执行任何命令前, 必须先识别命令, 再读取 `references/` 下对应的说明文件. 每个命令说明文件定义该命令的会话文件夹解析, 访问模式, 工作流和输出风格. 同时应用本文件中的 `全局不变量`, 命令说明文件和命令说明文件中的 `执行前检查`. 不要在命令说明文件中重复路由逻辑或全局规则.
 
-任何命令只要会读取, 写入, 校验, 总结或输出 `CONTEXT.md`, `HISTORY.md`, `REVIEW.md`, `Work Artifacts` 或 handoff 条目, 都必须先读取 `references/file-contracts.md`. 当文件契约可用时, 不要凭记忆重建文件结构.
+任何命令只要会读取, 写入, 校验, 总结或输出 `CONTEXT.md`, `HISTORY.md`, `REVIEW.md`, `Work Artifacts` 或 handoff 条目, 都必须先读取 `references/file-contracts.md`. 如果必须读取的 reference 尚未读取或不可用, 停止执行并报告缺失项. 当文件契约可用时, 不要凭记忆重建文件结构.
 
 命令说明文件:
 
