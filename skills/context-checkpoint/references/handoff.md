@@ -88,7 +88,7 @@
 - `Discarded` 表示没有复制到目标会话文件夹. 绝不删除源文件.
 - 源 `REVIEW.md` 默认视为历史 / 过期产物并丢弃, 因为它审阅的是源会话文件夹, 不是目标会话文件夹.
 - 不得将源 `REVIEW.md` 复制为目标 `REVIEW.md`.
-- 如果用户明确要求保留源 `REVIEW.md`, 只能把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder}.md`, 并记录在 handoff entry 的 copied files 中.
+- 如果用户明确要求保留源 `REVIEW.md`, 只能把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder-name}.md`, 并记录在 handoff entry 的 copied files 中. `{source-session-folder-name}` 只取源会话文件夹的末段名称, 例如 `20260605-example-session`, 不得使用完整路径.
 - 保留源 `REVIEW.md` 时, 不得改写其中的 `Reviewed Session`. 该字段必须继续指向原被审阅会话文件夹.
 - 目标会话文件夹中名为 `REVIEW.md` 的文件只能由 `review` 生成, 不由 `handoff` 从源会话文件夹复制得到.
 

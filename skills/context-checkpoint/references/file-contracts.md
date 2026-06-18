@@ -184,7 +184,7 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 
 每次创建或更新 `REVIEW.md` 时, 必须同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级章节.
 
-`REVIEW.md` 是 review 产物, 不是 checkpoint 文件. `restore` 将其视为导航提示, 不视为当前状态. `handoff` 默认不复制源会话文件夹的 `REVIEW.md`, 因为它审阅的是源会话文件夹, 不是目标会话文件夹. 如果用户明确要求保留源 `REVIEW.md`, 必须把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder}.md`, 不得复制为目标 `REVIEW.md`, 也不得改写其中的 `Reviewed Session`.
+`REVIEW.md` 是 review 产物, 不是 checkpoint 文件. `restore` 将其视为导航提示, 不视为当前状态. `handoff` 默认不复制源会话文件夹的 `REVIEW.md`, 因为它审阅的是源会话文件夹, 不是目标会话文件夹. 如果用户明确要求保留源 `REVIEW.md`, 必须把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder-name}.md`, 不得复制为目标 `REVIEW.md`, 也不得改写其中的 `Reviewed Session`. `{source-session-folder-name}` 只取源会话文件夹的末段名称, 例如 `20260605-example-session`, 不得使用完整路径.
 
 `review` 默认用最新审阅结果覆盖写 `REVIEW.md`, 不自动归档旧 review. 如需长期追溯审阅历史, 后续 `update` 可把关键审阅结论写入 `HISTORY.md`.
 
