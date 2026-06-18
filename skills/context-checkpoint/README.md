@@ -9,6 +9,7 @@
   - [Review File](#review-file)
 - [Capabilities](#capabilities)
 - [Usage Examples](#usage-examples)
+- [Status](#status)
 - [Update](#update)
 - [Restore](#restore)
 - [Handoff](#handoff)
@@ -59,12 +60,13 @@ Checkpoint files rebuild session context:
 
 ## Capabilities
 
-The skill provides four core capabilities:
+The skill provides five core capabilities:
 
 - `update`: Create or refresh the current session checkpoint.
 - `restore`: Read-only restore of session context from the current session checkpoint or checkpoint files in a specified session folder.
 - `handoff`: Take over, migrate, or branch context from another session checkpoint, then save the rebuilt checkpoint into the current session folder.
 - `review`: Review the actual work referenced by checkpoint files in the current session folder or a specified session folder, then write the result to `REVIEW.md` in that folder.
+- `status`: Read-only listing of the current goal, current state, and pending items from a session checkpoint.
 
 ## Usage Examples
 
@@ -77,6 +79,7 @@ $context-checkpoint restore .agent-sessions/20260605-example-session
 $context-checkpoint handoff .agent-sessions/20260605-example-session
 $context-checkpoint review
 $context-checkpoint review .agent-sessions/20260605-example-session
+$context-checkpoint status
 ```
 
 Explicit natural-language requests:
@@ -88,9 +91,31 @@ $context-checkpoint restore context from .agent-sessions/20260605-example-sessio
 $context-checkpoint take over context from .agent-sessions/20260605-example-session into the current session.
 $context-checkpoint review the current session folder.
 $context-checkpoint review .agent-sessions/20260605-example-session.
+$context-checkpoint list current checkpoint status.
 ```
 
-Fully implicit natural-language requests are supported when the requested capability is clear, but explicitly calling `$context-checkpoint` is recommended. When `$context-checkpoint` is called and the intended capability is unclear, the agent should stop and ask which command to run instead of guessing.
+Fully implicit natural-language requests are supported when the requested capability is clear, but explicitly calling `$context-checkpoint` is recommended. When `$context-checkpoint` is called and the intended capability is unclear, the agent will not guess blindly. It stops and asks the user to specify the command.
+
+## Status
+
+`status` read-only lists the current state and pending items from a checkpoint.
+
+Permissions:
+
+- Reads the current session folder by default.
+- Reads the specified session folder when a path is provided.
+- May read `CONTEXT.md` and optional `REVIEW.md`.
+- Does not read `HISTORY.md` unless the user explicitly asks for historical background.
+- Must not write checkpoint files, write `REVIEW.md`, modify project files, or execute TODO items.
+
+Behavior:
+
+- Outputs `Current Goal`, `Current State`, `Known Risks`, `Open Questions`, `TODO`, `Next Actions`, and `Open Review Findings`.
+- Preserves the original `CONTEXT.md` content for every section except `Open Review Findings`.
+- Lists all `Open` findings under `Open Review Findings` by default, using `[Open][High] F-003: Short finding title`.
+- Does not expand finding impact, evidence, or recommended fix.
+- Does not verify whether findings still match current project facts.
+- After successful `update`, `restore`, and `handoff`, the agent also outputs the same status summary. `restore` and `handoff` output their command-specific details first, then output the status summary.
 
 ## Update
 
@@ -109,6 +134,7 @@ Behavior:
 - Prioritizes current project files over conflicting checkpoint content.
 - Rewrites `CONTEXT.md` as a clean current-state snapshot, moving stale, rejected, or no longer useful content out of `CONTEXT.md`.
 - Appends one new `HISTORY.md` entry instead of merging new history into old entries.
+- Outputs the current session folder status summary after successful completion.
 
 ## Restore
 
@@ -131,6 +157,8 @@ Behavior:
 - Skips `Resolved` and `Won't Fix` findings in `REVIEW.md`, verifies `Open` findings within their referenced scope, and surfaces findings that still match current project facts.
 - Reports missing or partial checkpoint files instead of guessing.
 - Prioritizes current project files over conflicting checkpoint content.
+- After successful completion, outputs restore source, files read, information source, and confidence notes first, then outputs the restore source status summary.
+- When `REVIEW.md` exists, `restore` outputs each `Open` finding verification result as a child item under `Open Review Findings`. Each verification result must include a category and an explanation, using only `Still Applies`, `Needs Review`, or `No Longer Applies` as the category.
 
 ## Handoff
 
@@ -155,6 +183,7 @@ Behavior:
 - Does not copy the source `REVIEW.md` as the target `REVIEW.md`. If the user explicitly asks to preserve it, keeps it only as a renamed historical review artifact without rewriting `Reviewed Session`.
 - Writes a concise provenance note in target `CONTEXT.md`.
 - Appends a handoff audit entry to target `HISTORY.md`.
+- After successful completion, outputs source session folder, target session folder, updated files, copied artifacts, discarded artifacts, and reference rewrites first, then outputs the target session folder status summary.
 
 ## Review
 

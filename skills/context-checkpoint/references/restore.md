@@ -2,8 +2,8 @@
 
 ## 目录
 
-- [会话文件夹解析](#会话文件夹解析)
 - [执行前检查](#执行前检查)
+- [会话文件夹解析](#会话文件夹解析)
 - [访问模式](#访问模式)
 - [工作流](#工作流)
 - [输出风格](#输出风格)
@@ -14,9 +14,10 @@
 
 - 已读取 `SKILL.md` 的 `全局不变量`.
 - 已读取 `references/file-contracts.md`.
+- 已读取 `references/status.md`, 用于成功后的 status summary 输出.
 - 已确认 restore 源会话文件夹.
 - 已确认本命令只读, 不写 checkpoint, `REVIEW.md` 或项目文件.
-- 如果存在 `REVIEW.md`, 只验证并浮出仍成立的 `Open` findings.
+- 如果存在 `REVIEW.md`, 只验证 `Open` findings, 并把验证结果作为 status summary 中 `Open Review Findings` 的子条目输出.
 
 ## 会话文件夹解析
 
@@ -44,32 +45,35 @@
 4. 只有在需要理解决策背景, 排障依据, 已拒绝方案或历史不确定性时, 才读取 `HISTORY.md`.
 5. 读取 `Work Artifacts`, 用于快速理解之前的工作范围.
 6. 当 restore 源会话文件夹中存在 `REVIEW.md` 时读取它. 跳过 `Resolved` 和 `Won't Fix` findings, 按 finding 指向范围尽力验证 `Open` findings 是否仍符合当前工程事实.
-7. 对仍符合当前工程事实的 `Open` findings, 将其作为待处理问题浮出, 并说明它们仍需处理. 如果这些问题尚未纳入 `Known Risks`, 在输出中提示后续 `update` 应纳入 `Known Risks`.
-8. 对无法验证的 `Open` findings, 在输出中标为需要后续人工或 review 复核, 不当作确定事实.
-9. 对不再符合当前工程事实的 `Open` findings, 不作为当前问题浮出, 并说明 `restore` 不会修改 `REVIEW.md`.
-10. 如果只有 `CONTEXT.md` 存在, 从它恢复.
-11. 如果只有 `HISTORY.md` 存在, 尽可能重建背景, 并说明缺失当前状态快照.
-12. 如果两个文件都不存在, 说明该会话文件夹中没有可用的 checkpoint 文件.
-13. 不要把旧 history 当作当前状态.
-14. 不要把未验证假设当作事实.
-15. 如果 `HISTORY.md` 与 `CONTEXT.md` 冲突, 以 `CONTEXT.md` 作为当前状态依据.
-16. 当恢复出的状态不完整, 来自推断, 或受冲突影响时, 说明信息来源和重建置信度.
+7. 将每条 `Open` finding 的 restore 验证结果规范化为以下三类之一, 并作为 status summary 中对应 `Open Review Findings` 条目的子条目输出:
+   - `Still Applies`: finding 仍符合当前工程事实, 需要继续处理. 说明中写明判断依据. 如果该问题尚未纳入 `Known Risks`, 在子条目中提示后续 `update` 应纳入 `Known Risks`.
+   - `Needs Review`: restore 无法确认 finding 是否仍成立, 需要后续人工或 review 复核. 说明中写明无法确认的原因. 不当作确定事实.
+   - `No Longer Applies`: finding 不再符合当前工程事实. 说明中写明不再成立的依据. 不作为当前问题浮出, 并说明 `restore` 不会修改 `REVIEW.md`.
+8. 如果只有 `CONTEXT.md` 存在, 从它恢复.
+9. 如果只有 `HISTORY.md` 存在, 尽可能重建背景, 并说明缺失当前状态快照.
+10. 如果两个文件都不存在, 说明该会话文件夹中没有可用的 checkpoint 文件.
+11. 不要把旧 history 当作当前状态.
+12. 不要把未验证假设当作事实.
+13. 如果 `HISTORY.md` 与 `CONTEXT.md` 冲突, 以 `CONTEXT.md` 作为当前状态依据.
+14. 当恢复出的状态不完整, 来自推断, 或受冲突影响时, 说明信息来源和重建置信度.
 
 执行 `restore` 时不要修改 checkpoint 文件, `REVIEW.md` 或项目文件, 除非用户明确要求后续工作.
 
 ## 输出风格
 
-总结重建后的会话状态, 不要重复整份 `HISTORY.md`. 包含:
+先输出 restore 独有内容:
 
-- 当前目标, 对应 `Current Goal`
-- 当前状态, 对应 `Current State`
-- 已确认决策, 对应 `Confirmed Decisions`
-- 活跃约束, 对应 `Active Constraints`
-- 已知风险, 对应 `Known Risks`
-- 开放问题, 对应 `Open Questions`
-- TODO
-- 下一步行动, 对应 `Next Actions`
-- 相关文件, 对应 `Relevant Files`
-- 工作产物, 对应 `Work Artifacts`
+- restore 源会话文件夹.
+- 已读取的 checkpoint 文件.
 - 重建状态的信息来源和置信度说明.
-- 当源会话文件夹包含 `REVIEW.md` 时, 输出 `Open` findings 的验证结果. 仍成立的问题列为待处理问题; 无法验证的问题列为需要复核; 不再成立的问题只作说明, 不浮出为当前事实.
+
+然后输出 restore 源会话文件夹的 status summary. status summary 格式见 `status.md`.
+
+当源会话文件夹包含 `REVIEW.md` 时, `Open Review Findings` 中的每条 `Open` finding 追加一个 restore 验证子条目:
+
+```md
+- [Open][High] F-003: 简短问题标题
+  - Restore Verification: Still Applies. 简短说明.
+```
+
+`Restore Verification` 必须包含分类和说明. 分类只允许 `Still Applies`, `Needs Review`, `No Longer Applies` 三种结果.

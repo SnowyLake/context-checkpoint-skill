@@ -9,6 +9,7 @@
   - [Review 文件](#review-文件)
 - [功能](#功能)
 - [使用示例](#使用示例)
+- [Status](#status)
 - [Update](#update)
 - [Restore](#restore)
 - [Handoff](#handoff)
@@ -59,12 +60,13 @@ Checkpoint 文件用于重建会话上下文:
 
 ## 功能
 
-这个 skill 提供四个核心功能:
+这个 skill 提供五个核心功能:
 
 - `update`: 创建或刷新当前会话 checkpoint.
 - `restore`: 只读地从当前会话 checkpoint 或指定会话文件夹中的 checkpoint 文件恢复会话上下文.
 - `handoff`: 从另一个会话 checkpoint 接管, 迁移或分支上下文, 并将重建后的 checkpoint 保存到当前会话文件夹.
 - `review`: 审阅当前会话文件夹或指定会话文件夹中 checkpoint 所指向的实际工作内容, 并将结果写入该文件夹的 `REVIEW.md`.
+- `status`: 只读列出当前会话 checkpoint 中的当前目标, 当前状态和待处理事项.
 
 ## 使用示例
 
@@ -77,6 +79,7 @@ $context-checkpoint restore .agent-sessions/20260605-example-session
 $context-checkpoint handoff .agent-sessions/20260605-example-session
 $context-checkpoint review
 $context-checkpoint review .agent-sessions/20260605-example-session
+$context-checkpoint status
 ```
 
 显式自然语言请求:
@@ -88,9 +91,31 @@ $context-checkpoint 从 .agent-sessions/20260605-example-session 恢复上下文
 $context-checkpoint 从 .agent-sessions/20260605-example-session 接管上下文到当前会话.
 $context-checkpoint 审阅当前会话文件夹.
 $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
+$context-checkpoint 列出当前 checkpoint 状态.
 ```
 
-当请求能力清楚时, 支持完全隐式的自然语言请求, 但推荐显式调用 `$context-checkpoint`. 如果已经调用 `$context-checkpoint`, 但无法判断应执行哪个能力, agent 应停止并询问用户明确命令, 不要猜测.
+当请求能力清楚时, 支持完全隐式的自然语言请求, 但推荐显式调用 `$context-checkpoint`. 如果已经调用 `$context-checkpoint`, 但无法判断应执行哪个能力, 此时 agent 不会盲目猜测, 而是会停止执行并询问用户明确命令.
+
+## Status
+
+`status` 用于只读列出 checkpoint 中的当前状态和待处理事项.
+
+权限:
+
+- 默认读取当前会话文件夹.
+- 提供路径时读取指定会话文件夹.
+- 可以读取 `CONTEXT.md` 和可选 `REVIEW.md`.
+- 不读取 `HISTORY.md`, 除非用户明确要求历史背景.
+- 不得写 checkpoint 文件, 写 `REVIEW.md`, 修改项目文件或执行 TODO.
+
+行为:
+
+- 输出 `Current Goal`, `Current State`, `Known Risks`, `Open Questions`, `TODO`, `Next Actions` 和 `Open Review Findings`.
+- 除 `Open Review Findings` 外, 其他章节保持 `CONTEXT.md` 中的原文内容.
+- `Open Review Findings` 默认列出全部 `Open` findings, 格式为 `[Open][High] F-003: 简短问题标题`.
+- 不展开 finding 的影响, 证据或推荐修复方案.
+- 不验证 finding 是否仍符合当前工程事实.
+- `update`, `restore` 和 `handoff` 成功完成后也会输出同样格式的 status summary. `restore` 和 `handoff` 会先输出各自独有内容, 再输出 status summary.
 
 ## Update
 
@@ -109,6 +134,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 当项目文件和 checkpoint 内容冲突时, 优先相信当前项目文件.
 - 将 `CONTEXT.md` 重写为干净的当前状态快照, 将过时, 被否决或对后续工作无价值的内容移出 `CONTEXT.md`.
 - 向 `HISTORY.md` 追加一个新的历史条目, 不把新历史合并进旧条目.
+- 成功完成后输出当前会话文件夹的 status summary.
 
 ## Restore
 
@@ -131,6 +157,8 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 当存在 `REVIEW.md` 时, 跳过 `Resolved` 和 `Won't Fix` findings, 按指向范围尽力验证 `Open` findings, 并浮出仍符合当前工程事实的问题.
 - 缺少或只有部分 checkpoint 文件时明确报告, 不自行猜测.
 - 当项目文件和 checkpoint 内容冲突时, 优先相信当前项目文件.
+- 成功完成后先输出 restore 来源, 已读取文件, 信息来源和置信度说明, 再输出恢复来源的 status summary.
+- 当存在 `REVIEW.md` 时, `restore` 会将每条 `Open` finding 的验证结果作为 `Open Review Findings` 子条目输出. 验证结果必须包含分类和说明, 分类只分为 `Still Applies`, `Needs Review`, `No Longer Applies`.
 
 ## Handoff
 
@@ -155,6 +183,7 @@ $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 - 不把源 `REVIEW.md` 复制为目标 `REVIEW.md`. 如果用户明确要求保留, 只能把它重命名为历史 review 产物, 且不改写 `Reviewed Session`.
 - 在目标会话文件夹 `CONTEXT.md` 写入简短 provenance note.
 - 向目标会话文件夹 `HISTORY.md` 追加 handoff 审计条目.
+- 成功完成后先输出源会话文件夹, 目标会话文件夹, 已更新文件, 已复制产物, 已丢弃产物和引用改写, 再输出目标会话文件夹的 status summary.
 
 ## Review
 

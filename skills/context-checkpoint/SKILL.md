@@ -15,18 +15,19 @@ description: Manage session context for long-running, multi-session, handoff-bas
 
 ## 概览
 
-提供四个能力:
+提供五个能力:
 
 - `update`: 在 `CONTEXT.md` 和 `HISTORY.md` 中创建或刷新当前会话 checkpoint.
 - `restore`: 以只读方式从当前会话 checkpoint 文件, 或显式指定会话文件夹中的 checkpoint 文件恢复当前会话上下文.
 - `handoff`: 从另一个会话文件夹接管, 迁移或派生上下文, 然后把结果保存到当前对话的会话文件夹.
 - `review`: 客观审阅当前会话文件夹或显式指定会话文件夹中 checkpoint 指向的实际工作内容, 然后把结果写入该文件夹的 `REVIEW.md`, 不恢复上下文, 也不继续实现.
+- `status`: 以只读方式列出当前会话 checkpoint 中的当前目标, 当前状态和待处理事项.
 
 ## 命令选择
 
-优先响应命令式请求, 或明确点名 `$context-checkpoint` 的自然语言请求. 当用户清楚要求 checkpoint 更新, 恢复, 接管或审阅时, 也允许完全隐式的自然语言请求.
+优先响应命令式请求, 或明确点名 `$context-checkpoint` 的自然语言请求. 当用户清楚要求 checkpoint 更新, 恢复, 接管, 审阅或查看状态时, 也允许完全隐式的自然语言请求.
 
-如果请求明确调用本 skill, 但无法可靠判断应执行 `update`, `restore`, `handoff`, `review` 中哪一个命令, 停止并询问用户明确指定命令. 不要擅自猜测, 也不要默认选择某个命令.
+如果请求明确调用本 skill, 但无法可靠判断应执行 `update`, `restore`, `handoff`, `review`, `status` 中哪一个命令, 停止并询问用户明确指定命令. 不要擅自猜测, 也不要默认选择某个命令.
 
 使用 `update` 的场景:
 
@@ -58,6 +59,12 @@ description: Manage session context for long-running, multi-session, handoff-bas
 - 用户询问某个会话的工作是否存在缺陷, 边界问题, 遗漏验证, 冲突或不一致.
 - 用户要求进行一次基于 checkpoint 导航的客观工作审阅, 且不恢复上下文, 不继续实现.
 
+使用 `status` 的场景:
+
+- 用户要求列出当前 checkpoint 的状态, 待处理事项, 已知风险, 开放问题, TODO 或下一步行动.
+- 用户要求快速查看当前会话做什么, 做到哪里, 还有什么要处理.
+- 用户只要求整理 checkpoint 中的当前状态和待办, 但没有要求恢复完整上下文, 审阅实际工作, 写 checkpoint 或迁移上下文.
+
 ## 执行
 
 执行任何命令前, 必须先识别命令, 再读取 `references/` 下对应的说明文件. 每个命令说明文件定义该命令的会话文件夹解析, 访问模式, 工作流和输出风格. 同时应用本文件中的 `全局不变量`, 命令说明文件和命令说明文件中的 `执行前检查`. 不要在命令说明文件中重复路由逻辑或全局规则.
@@ -70,6 +77,7 @@ description: Manage session context for long-running, multi-session, handoff-bas
 - `references/restore.md`: 从 checkpoint 重建会话上下文.
 - `references/handoff.md`: 把 checkpoint 转移到当前会话文件夹.
 - `references/review.md`: 审阅 checkpoint 背后的实际工作内容, 并写入 `REVIEW.md`.
+- `references/status.md`: 只读列出 checkpoint 中的当前状态和待处理事项.
 
 共享文件契约:
 
