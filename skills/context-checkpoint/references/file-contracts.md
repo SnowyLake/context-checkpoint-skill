@@ -16,7 +16,7 @@
 
 ## TOC 规则
 
-`CONTEXT.md`, `HISTORY.md` 和 `REVIEW.md` 必须包含 `## Table of Contents`. TOC 是 checkpoint 和 review 文件结构的一部分, 放在一级标题之后, 正文二级章节之前.
+`CONTEXT.md`, `HISTORY.md` 和 `REVIEW.md` 必须包含 `## Table of Contents`. TOC 是 checkpoint 和 review 文件结构的一部分, 放在一级标题之后, 正文二级章节之前. `## Table of Contents` 是固定结构标题, 不随正文语言翻译.
 
 TOC 必须列出文件中的所有二级章节. 模板中的 `- ...` 表示按实际章节生成 TOC, 不是要保留的字面内容. 每次追加, 删除或重命名章节时, 必须同步更新 TOC.
 
