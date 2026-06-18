@@ -90,7 +90,7 @@ $context-checkpoint review the current session folder.
 $context-checkpoint review .agent-sessions/20260605-example-session.
 ```
 
-Fully implicit natural-language requests are supported when the requested capability is clear, but explicitly calling `$context-checkpoint` is recommended.
+Fully implicit natural-language requests are supported when the requested capability is clear, but explicitly calling `$context-checkpoint` is recommended. When `$context-checkpoint` is called and the intended capability is unclear, the agent should stop and ask which command to run instead of guessing.
 
 ## Update
 

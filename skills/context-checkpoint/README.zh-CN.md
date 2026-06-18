@@ -90,7 +90,7 @@ $context-checkpoint 审阅当前会话文件夹.
 $context-checkpoint 审阅 .agent-sessions/20260605-example-session.
 ```
 
-完全隐式的自然语言请求不被禁止, 但推荐显式调用 `$context-checkpoint`.
+当请求能力清楚时, 支持完全隐式的自然语言请求, 但推荐显式调用 `$context-checkpoint`. 如果已经调用 `$context-checkpoint`, 但无法判断应执行哪个能力, agent 应停止并询问用户明确命令, 不要猜测.
 
 ## Update
 

@@ -26,6 +26,8 @@ description: Manage session context for long-running, multi-session, handoff-bas
 
 优先响应命令式请求, 或明确点名 `$context-checkpoint` 的自然语言请求. 当用户清楚要求 checkpoint 更新, 恢复, 接管或审阅时, 也允许完全隐式的自然语言请求.
 
+如果请求明确调用本 skill, 但无法可靠判断应执行 `update`, `restore`, `handoff`, `review` 中哪一个命令, 停止并询问用户明确指定命令. 不要擅自猜测, 也不要默认选择某个命令.
+
 使用 `update` 的场景:
 
 - 用户明确要求生成, 更新或刷新 checkpoint 文件.
