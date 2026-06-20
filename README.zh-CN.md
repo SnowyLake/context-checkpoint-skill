@@ -7,6 +7,7 @@
 - [概览](#概览)
 - [可用 Skills](#可用-skills)
   - [context-checkpoint](#context-checkpoint)
+  - [codex-rate-limit-resets](#codex-rate-limit-resets)
 - [新增 Skills](#新增-skills)
 - [仓库结构](#仓库结构)
 
@@ -23,6 +24,16 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 - 简介: 管理 long-running, multi-session, handoff-based 或 review-driven agent work 中的会话上下文.
 
 - 文档: [English](skills/context-checkpoint/README.md), [中文](skills/context-checkpoint/README.zh-CN.md)
+
+- 适用范围: All agents.
+
+### codex-rate-limit-resets
+
+- 简介: 查询当前 Codex 账户可用的 rate limit reset credits 和过期时间.
+
+- 文档: [SKILL.md](skills/codex-rate-limit-resets/SKILL.md)
+
+- 适用范围: Codex only.
 
 ## 新增 Skills
 
@@ -54,6 +65,12 @@ skills/<skill-name>/
 ```text
 SnowyAgentSkills/
 |-- skills/
+|   |-- codex-rate-limit-resets/
+|   |   |-- SKILL.md
+|   |   |-- scripts/
+|   |   |   `-- check_reset_credits.py
+|   |   `-- agents/
+|   |       `-- openai.yaml
 |   `-- context-checkpoint/
 |       |-- SKILL.md
 |       |-- README.md

@@ -7,6 +7,7 @@ Language: English | [中文](README.zh-CN.md)
 - [Overview](#overview)
 - [Available Skills](#available-skills)
   - [context-checkpoint](#context-checkpoint)
+  - [codex-rate-limit-resets](#codex-rate-limit-resets)
 - [Add Skills](#add-skills)
 - [Repository Layout](#repository-layout)
 
@@ -23,6 +24,16 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 - Description: Manage session context for long-running, multi-session, handoff-based, or review-driven agent work.
 
 - Documentation: [English](skills/context-checkpoint/README.md), [中文](skills/context-checkpoint/README.zh-CN.md)
+
+- Agent scope: All agents.
+
+### codex-rate-limit-resets
+
+- Description: Query the current Codex account's available rate limit reset credits and expiration times.
+
+- Documentation: [SKILL.md](skills/codex-rate-limit-resets/SKILL.md)
+
+- Agent scope: Codex only.
 
 ## Add Skills
 
@@ -54,6 +65,12 @@ Keep each skill self-contained and avoid placing skill-specific documentation in
 ```text
 SnowyAgentSkills/
 |-- skills/
+|   |-- codex-rate-limit-resets/
+|   |   |-- SKILL.md
+|   |   |-- scripts/
+|   |   |   `-- check_reset_credits.py
+|   |   `-- agents/
+|   |       `-- openai.yaml
 |   `-- context-checkpoint/
 |       |-- SKILL.md
 |       |-- README.md
