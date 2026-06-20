@@ -48,12 +48,12 @@ python scripts/check_reset_credits.py
 Available reset credit count: 2
 Total earned count: 1
 
-| 序号 | 状态 | 过期时间 | 来源 |
+| 序号 | 状态 | 过期时间 (UTC+8) | 来源 |
 | --- | --- | --- | --- |
-| 1 | available | 2026-07-14 18:25:39 | @example |
+| 1 | available | 2026-07-15 02:25:39 | @example |
 ```
 
-- 过期时间使用 UTC, 格式为 `YYYY-MM-DD HH:MM:SS`.
+- 过期时间按当前设备本地时区显示, 表头自动标注 UTC offset, 格式为 `YYYY-MM-DD HH:MM:SS`.
 - 如果 `status` 不是 `available`, 保留该状态, 不要把它计入可用机会.
 - 不要把此接口当成稳定公开 API. 如果字段缺失或响应格式变化, 如实说明并展示可确认字段.
 

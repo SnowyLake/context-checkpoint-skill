@@ -39,13 +39,13 @@ The default response is a Markdown table sorted by expiration time, from soonest
 Available reset credit count: 2
 Total earned count: 1
 
-| 序号 | 状态 | 过期时间 | 来源 |
+| 序号 | 状态 | 过期时间 (UTC+8) | 来源 |
 | --- | --- | --- | --- |
-| 1 | available | 2026-07-14 18:25:39 | @example |
-| 2 | available | 2026-07-18 00:20:44 | Codex Team |
+| 1 | available | 2026-07-15 02:25:39 | @example |
+| 2 | available | 2026-07-18 08:20:44 | Codex Team |
 ```
 
-Expiration times are shown in UTC as `YYYY-MM-DD HH:MM:SS`.
+Expiration times are shown in the current device timezone as `YYYY-MM-DD HH:MM:SS`, and the table header includes the detected UTC offset.
 
 ## Advanced Requests
 

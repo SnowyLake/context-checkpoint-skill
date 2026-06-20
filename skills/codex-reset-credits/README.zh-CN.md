@@ -39,13 +39,13 @@ $codex-reset-credits
 Available reset credit count: 2
 Total earned count: 1
 
-| 序号 | 状态 | 过期时间 | 来源 |
+| 序号 | 状态 | 过期时间 (UTC+8) | 来源 |
 | --- | --- | --- | --- |
-| 1 | available | 2026-07-14 18:25:39 | @example |
-| 2 | available | 2026-07-18 00:20:44 | Codex Team |
+| 1 | available | 2026-07-15 02:25:39 | @example |
+| 2 | available | 2026-07-18 08:20:44 | Codex Team |
 ```
 
-过期时间使用 UTC, 格式为 `YYYY-MM-DD HH:MM:SS`.
+过期时间按当前设备本地时区显示, 格式为 `YYYY-MM-DD HH:MM:SS`, 表头会自动标注检测到的 UTC offset.
 
 ## 高级请求
 

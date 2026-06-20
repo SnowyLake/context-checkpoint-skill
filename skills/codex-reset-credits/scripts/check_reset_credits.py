@@ -94,11 +94,26 @@ def short_id(value: Any) -> str | None:
     return value[-12:]
 
 
-def format_utc(value: Any) -> str:
+def utc_offset_label(value: datetime | None = None) -> str:
+    local_time = value.astimezone() if value is not None else datetime.now().astimezone()
+    offset = local_time.utcoffset()
+    if offset is None:
+        return "UTC"
+
+    total_minutes = int(offset.total_seconds() // 60)
+    sign = "+" if total_minutes >= 0 else "-"
+    total_minutes = abs(total_minutes)
+    hours, minutes = divmod(total_minutes, 60)
+    if minutes == 0:
+        return f"UTC{sign}{hours}"
+    return f"UTC{sign}{hours}:{minutes:02d}"
+
+
+def format_local_time(value: Any) -> str:
     parsed = parse_utc(value)
     if parsed is None:
         return str(value or "")
-    return parsed.strftime("%Y-%m-%d %H:%M:%S")
+    return parsed.astimezone().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def sort_key(credit: dict[str, Any]) -> tuple[int, datetime]:
@@ -161,7 +176,7 @@ def format_markdown(payload: dict[str, Any]) -> str:
         f"Available reset credit count: {payload.get('available_count')}",
         f"Total earned count: {payload.get('total_earned_count')}",
         "",
-        "| 序号 | 状态 | 过期时间 | 来源 |",
+        f"| 序号 | 状态 | 过期时间 ({utc_offset_label()}) | 来源 |",
         "| --- | --- | --- | --- |",
     ]
     for index, credit in enumerate(sorted_credits, start=1):
@@ -169,7 +184,7 @@ def format_markdown(payload: dict[str, Any]) -> str:
             "| "
             f"{index} | "
             f"{escape_markdown_cell(credit.get('status'))} | "
-            f"{escape_markdown_cell(format_utc(credit.get('expires_at')))} | "
+            f"{escape_markdown_cell(format_local_time(credit.get('expires_at')))} | "
             f"{escape_markdown_cell(credit.get('profile_user_id'))} |"
         )
     return "\n".join(lines)
