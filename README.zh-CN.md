@@ -7,7 +7,7 @@
 - [概览](#概览)
 - [可用 Skills](#可用-skills)
   - [context-checkpoint](#context-checkpoint)
-  - [codex-rate-limit-resets](#codex-rate-limit-resets)
+  - [codex-reset-credits](#codex-reset-credits)
 - [新增 Skills](#新增-skills)
 - [仓库结构](#仓库结构)
 
@@ -27,11 +27,11 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 
 - 适用范围: All agents.
 
-### codex-rate-limit-resets
+### codex-reset-credits
 
 - 简介: 查询当前 Codex 账户可用的 rate limit reset credits 和过期时间.
 
-- 文档: [SKILL.md](skills/codex-rate-limit-resets/SKILL.md)
+- 文档: [English](skills/codex-reset-credits/README.md), [中文](skills/codex-reset-credits/README.zh-CN.md)
 
 - 适用范围: Codex only.
 
@@ -65,8 +65,10 @@ skills/<skill-name>/
 ```text
 SnowyAgentSkills/
 |-- skills/
-|   |-- codex-rate-limit-resets/
+|   |-- codex-reset-credits/
 |   |   |-- SKILL.md
+|   |   |-- README.md
+|   |   |-- README.zh-CN.md
 |   |   |-- scripts/
 |   |   |   `-- check_reset_credits.py
 |   |   `-- agents/

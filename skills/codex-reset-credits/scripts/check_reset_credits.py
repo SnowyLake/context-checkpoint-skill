@@ -34,7 +34,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--raw",
         action="store_true",
-        help="Print the raw backend response instead of a redacted summary.",
+        help="Print the raw backend response instead of a redacted output.",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Print the redacted summary as JSON instead of Markdown.",
     )
     return parser.parse_args()
 
@@ -89,6 +94,24 @@ def short_id(value: Any) -> str | None:
     return value[-12:]
 
 
+def format_utc(value: Any) -> str:
+    parsed = parse_utc(value)
+    if parsed is None:
+        return str(value or "")
+    return parsed.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def sort_key(credit: dict[str, Any]) -> tuple[int, datetime]:
+    expires_at = parse_utc(credit.get("expires_at"))
+    if expires_at is None:
+        return (1, datetime.max.replace(tzinfo=timezone.utc))
+    return (0, expires_at)
+
+
+def escape_markdown_cell(value: Any) -> str:
+    return str(value or "").replace("|", "\\|")
+
+
 def summarize(payload: dict[str, Any]) -> dict[str, Any]:
     now = datetime.now(timezone.utc)
     credits = payload.get("credits", [])
@@ -96,7 +119,7 @@ def summarize(payload: dict[str, Any]) -> dict[str, Any]:
         credits = []
 
     summarized = []
-    for credit in credits:
+    for credit in sorted((credit for credit in credits if isinstance(credit, dict)), key=sort_key):
         if not isinstance(credit, dict):
             continue
 
@@ -121,12 +144,35 @@ def summarize(payload: dict[str, Any]) -> dict[str, Any]:
             }
         )
 
-    summarized.sort(key=lambda item: item.get("expires_at") or "")
     return {
         "available_count": payload.get("available_count"),
         "total_earned_count": payload.get("total_earned_count"),
         "credits": summarized,
     }
+
+
+def format_markdown(payload: dict[str, Any]) -> str:
+    credits = payload.get("credits", [])
+    if not isinstance(credits, list):
+        credits = []
+    sorted_credits = sorted((credit for credit in credits if isinstance(credit, dict)), key=sort_key)
+
+    lines = [
+        f"Available reset credit count: {payload.get('available_count')}",
+        f"Total earned count: {payload.get('total_earned_count')}",
+        "",
+        "| 序号 | 状态 | 过期时间 | 来源 |",
+        "| --- | --- | --- | --- |",
+    ]
+    for index, credit in enumerate(sorted_credits, start=1):
+        lines.append(
+            "| "
+            f"{index} | "
+            f"{escape_markdown_cell(credit.get('status'))} | "
+            f"{escape_markdown_cell(format_utc(credit.get('expires_at')))} | "
+            f"{escape_markdown_cell(credit.get('profile_user_id'))} |"
+        )
+    return "\n".join(lines)
 
 
 def main() -> int:
@@ -144,8 +190,12 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 1
 
-    output = payload if args.raw else summarize(payload)
-    print(json.dumps(output, ensure_ascii=False, indent=2))
+    if args.raw:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+    elif args.json:
+        print(json.dumps(summarize(payload), ensure_ascii=False, indent=2))
+    else:
+        print(format_markdown(payload))
     return 0
 
 

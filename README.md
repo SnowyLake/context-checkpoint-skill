@@ -7,7 +7,7 @@ Language: English | [中文](README.zh-CN.md)
 - [Overview](#overview)
 - [Available Skills](#available-skills)
   - [context-checkpoint](#context-checkpoint)
-  - [codex-rate-limit-resets](#codex-rate-limit-resets)
+  - [codex-reset-credits](#codex-reset-credits)
 - [Add Skills](#add-skills)
 - [Repository Layout](#repository-layout)
 
@@ -27,11 +27,11 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 
 - Agent scope: All agents.
 
-### codex-rate-limit-resets
+### codex-reset-credits
 
 - Description: Query the current Codex account's available rate limit reset credits and expiration times.
 
-- Documentation: [SKILL.md](skills/codex-rate-limit-resets/SKILL.md)
+- Documentation: [English](skills/codex-reset-credits/README.md), [中文](skills/codex-reset-credits/README.zh-CN.md)
 
 - Agent scope: Codex only.
 
@@ -65,8 +65,10 @@ Keep each skill self-contained and avoid placing skill-specific documentation in
 ```text
 SnowyAgentSkills/
 |-- skills/
-|   |-- codex-rate-limit-resets/
+|   |-- codex-reset-credits/
 |   |   |-- SKILL.md
+|   |   |-- README.md
+|   |   |-- README.zh-CN.md
 |   |   |-- scripts/
 |   |   |   `-- check_reset_credits.py
 |   |   `-- agents/
