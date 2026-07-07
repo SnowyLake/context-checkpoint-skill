@@ -77,44 +77,13 @@ skills/<skill-name>/
 SnowyAgentSkills/
 |-- skills/
 |   |-- codex-reset-credits/
-|   |   |-- SKILL.md
-|   |   |-- README.md
-|   |   |-- README.zh-CN.md
-|   |   |-- scripts/
-|   |   |   `-- check_reset_credits.py
-|   |   `-- agents/
-|   |       `-- openai.yaml
 |   |-- checkpoint/
-|   |   |-- README.md
-|   |   |-- README.zh-CN.md
 |   |   |-- checkpoint-save/
-|   |   |   |-- SKILL.md
-|   |   |   |-- references/
-|   |   |   |   |-- common-rules.md
-|   |   |   |   |-- file-contracts.md
-|   |   |   |   `-- status-summary.md
-|   |   |   `-- agents/
-|   |   |       `-- openai.yaml
 |   |   |-- checkpoint-restore/
-|   |   |   |-- SKILL.md
-|   |   |   `-- agents/
-|   |   |       `-- openai.yaml
 |   |   |-- checkpoint-handoff/
-|   |   |   |-- SKILL.md
-|   |   |   `-- agents/
-|   |   |       `-- openai.yaml
 |   |   |-- checkpoint-status/
-|   |   |   |-- SKILL.md
-|   |   |   `-- agents/
-|   |   |       `-- openai.yaml
 |   |   `-- checkpoint-review/
-|   |       |-- SKILL.md
-|   |       `-- agents/
-|   |           `-- openai.yaml
 |   `-- grill-me/
-|       |-- SKILL.md
-|       `-- agents/
-|           `-- openai.yaml
 |-- README.md
 |-- README.zh-CN.md
 |-- LICENSE
