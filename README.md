@@ -8,6 +8,7 @@ Language: English | [中文](README.zh-CN.md)
 - [Available Skills](#available-skills)
   - [context-checkpoint](#context-checkpoint)
   - [codex-reset-credits](#codex-reset-credits)
+  - [grill-me](#grill-me)
 - [Add Skills](#add-skills)
 - [Repository Layout](#repository-layout)
 
@@ -34,6 +35,14 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 - Documentation: [English](skills/codex-reset-credits/README.md), [中文](skills/codex-reset-credits/README.zh-CN.md)
 
 - Agent scope: Codex only.
+
+### grill-me
+
+- Description: Forked from mattpocock/skills. A relentless interview to sharpen a plan or design.
+
+- Documentation: [SKILL.md](skills/grill-me/SKILL.md)
+
+- Agent scope: All agents.
 
 ## Add Skills
 
@@ -73,11 +82,15 @@ SnowyAgentSkills/
 |   |   |   `-- check_reset_credits.py
 |   |   `-- agents/
 |   |       `-- openai.yaml
-|   `-- context-checkpoint/
+|   |-- context-checkpoint/
+|   |   |-- SKILL.md
+|   |   |-- README.md
+|   |   |-- README.zh-CN.md
+|   |   |-- references/
+|   |   `-- agents/
+|   |       `-- openai.yaml
+|   `-- grill-me/
 |       |-- SKILL.md
-|       |-- README.md
-|       |-- README.zh-CN.md
-|       |-- references/
 |       `-- agents/
 |           `-- openai.yaml
 |-- README.md

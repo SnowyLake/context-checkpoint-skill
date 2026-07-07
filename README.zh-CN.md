@@ -8,6 +8,7 @@
 - [可用 Skills](#可用-skills)
   - [context-checkpoint](#context-checkpoint)
   - [codex-reset-credits](#codex-reset-credits)
+  - [grill-me](#grill-me)
 - [新增 Skills](#新增-skills)
 - [仓库结构](#仓库结构)
 
@@ -34,6 +35,14 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 - 文档: [English](skills/codex-reset-credits/README.md), [中文](skills/codex-reset-credits/README.zh-CN.md)
 
 - 适用范围: Codex only.
+
+### grill-me
+
+- 简介: Forked from mattpocock/skills. A relentless interview to sharpen a plan or design.
+
+- 文档: [SKILL.md](skills/grill-me/SKILL.md)
+
+- 适用范围: All agents.
 
 ## 新增 Skills
 
@@ -73,11 +82,15 @@ SnowyAgentSkills/
 |   |   |   `-- check_reset_credits.py
 |   |   `-- agents/
 |   |       `-- openai.yaml
-|   `-- context-checkpoint/
+|   |-- context-checkpoint/
+|   |   |-- SKILL.md
+|   |   |-- README.md
+|   |   |-- README.zh-CN.md
+|   |   |-- references/
+|   |   `-- agents/
+|   |       `-- openai.yaml
+|   `-- grill-me/
 |       |-- SKILL.md
-|       |-- README.md
-|       |-- README.zh-CN.md
-|       |-- references/
 |       `-- agents/
 |           `-- openai.yaml
 |-- README.md
