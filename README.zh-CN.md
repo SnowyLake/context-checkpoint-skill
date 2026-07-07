@@ -6,7 +6,7 @@
 
 - [概览](#概览)
 - [可用 Skills](#可用-skills)
-  - [context-checkpoint](#context-checkpoint)
+  - [checkpoint](#checkpoint)
   - [codex-reset-credits](#codex-reset-credits)
   - [grill-me](#grill-me)
 - [新增 Skills](#新增-skills)
@@ -20,11 +20,13 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 
 ## 可用 Skills
 
-### context-checkpoint
+### checkpoint
 
-- 简介: 管理 long-running, multi-session, handoff-based 或 review-driven agent work 中的会话上下文.
+- 简介: checkpoint skill family, 用于在 long-running, multi-session, handoff-based 或 review-driven agent work 中保存, 恢复, 接管, 查看状态和审阅会话上下文.
 
-- 文档: [English](skills/context-checkpoint/README.md), [中文](skills/context-checkpoint/README.zh-CN.md)
+- Skills: `checkpoint-save`, `checkpoint-restore`, `checkpoint-handoff`, `checkpoint-status`, `checkpoint-review`.
+
+- 文档: [English](skills/checkpoint/README.md), [中文](skills/checkpoint/README.zh-CN.md)
 
 - 适用范围: All agents.
 
@@ -82,13 +84,23 @@ SnowyAgentSkills/
 |   |   |   `-- check_reset_credits.py
 |   |   `-- agents/
 |   |       `-- openai.yaml
-|   |-- context-checkpoint/
-|   |   |-- SKILL.md
+|   |-- checkpoint/
 |   |   |-- README.md
 |   |   |-- README.zh-CN.md
-|   |   |-- references/
-|   |   `-- agents/
-|   |       `-- openai.yaml
+|   |   |-- checkpoint-save/
+|   |   |   |-- SKILL.md
+|   |   |   `-- references/
+|   |   |       |-- common-rules.md
+|   |   |       |-- file-contracts.md
+|   |   |       `-- status-summary.md
+|   |   |-- checkpoint-restore/
+|   |   |   `-- SKILL.md
+|   |   |-- checkpoint-handoff/
+|   |   |   `-- SKILL.md
+|   |   |-- checkpoint-status/
+|   |   |   `-- SKILL.md
+|   |   `-- checkpoint-review/
+|   |       `-- SKILL.md
 |   `-- grill-me/
 |       |-- SKILL.md
 |       `-- agents/

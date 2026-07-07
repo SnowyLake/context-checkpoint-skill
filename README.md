@@ -6,7 +6,7 @@ Language: English | [中文](README.zh-CN.md)
 
 - [Overview](#overview)
 - [Available Skills](#available-skills)
-  - [context-checkpoint](#context-checkpoint)
+  - [checkpoint](#checkpoint)
   - [codex-reset-credits](#codex-reset-credits)
   - [grill-me](#grill-me)
 - [Add Skills](#add-skills)
@@ -20,11 +20,13 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 
 ## Available Skills
 
-### context-checkpoint
+### checkpoint
 
-- Description: Manage session context for long-running, multi-session, handoff-based, or review-driven agent work.
+- Description: Checkpoint skill family for saving, restoring, handing off, listing status, and reviewing session context in long-running, multi-session, handoff-based, or review-driven agent work.
 
-- Documentation: [English](skills/context-checkpoint/README.md), [中文](skills/context-checkpoint/README.zh-CN.md)
+- Skills: `checkpoint-save`, `checkpoint-restore`, `checkpoint-handoff`, `checkpoint-status`, `checkpoint-review`.
+
+- Documentation: [English](skills/checkpoint/README.md), [中文](skills/checkpoint/README.zh-CN.md)
 
 - Agent scope: All agents.
 
@@ -82,13 +84,23 @@ SnowyAgentSkills/
 |   |   |   `-- check_reset_credits.py
 |   |   `-- agents/
 |   |       `-- openai.yaml
-|   |-- context-checkpoint/
-|   |   |-- SKILL.md
+|   |-- checkpoint/
 |   |   |-- README.md
 |   |   |-- README.zh-CN.md
-|   |   |-- references/
-|   |   `-- agents/
-|   |       `-- openai.yaml
+|   |   |-- checkpoint-save/
+|   |   |   |-- SKILL.md
+|   |   |   `-- references/
+|   |   |       |-- common-rules.md
+|   |   |       |-- file-contracts.md
+|   |   |       `-- status-summary.md
+|   |   |-- checkpoint-restore/
+|   |   |   `-- SKILL.md
+|   |   |-- checkpoint-handoff/
+|   |   |   `-- SKILL.md
+|   |   |-- checkpoint-status/
+|   |   |   `-- SKILL.md
+|   |   `-- checkpoint-review/
+|   |       `-- SKILL.md
 |   `-- grill-me/
 |       |-- SKILL.md
 |       `-- agents/

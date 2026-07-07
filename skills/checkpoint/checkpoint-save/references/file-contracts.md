@@ -12,7 +12,7 @@
   - [Finding 状态](#finding-状态)
   - [Severity 范围](#severity-范围)
 
-本说明文件定义所有 `context-checkpoint` 命令共享的 checkpoint 和 review 文件结构. 命令说明文件指向这里, 不重复这些结构.
+本说明文件定义 checkpoint skill family 共享的 checkpoint 和 review 文件结构.
 
 ## TOC 规则
 
@@ -67,7 +67,7 @@ Section 含义:
 
 每次创建或更新 `CONTEXT.md` 时, 必须同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级章节.
 
-执行 `handoff` 时, 目标 `CONTEXT.md` 必须在 `Current State` 下包含一条简洁来源说明, 标明源会话文件夹. 不要把已复制 / 已丢弃文件列表, 用户要求的修正或详细引用改写记录放入 `CONTEXT.md`.
+执行 `checkpoint-handoff` 时, target `CONTEXT.md` 必须在 `Current State` 下包含一条简洁来源说明, 标明 source session folder. 不要把已复制 / 已丢弃文件列表, user overrides 或详细 reference rewrite records 放入 `CONTEXT.md`.
 
 ### Work Artifacts
 
@@ -85,7 +85,7 @@ Section 含义:
 - `[Deleted]`: 本会话删除了该文件.
 - `[Moved]`: 本会话移动或重命名了该文件.
 
-每次 `update` 都必须维护 `Work Artifacts`, 但没有工作产物时可以为空.
+每次 `checkpoint-save` 都必须维护 `Work Artifacts`, 但没有工作产物时可以为空.
 
 ## HISTORY.md
 
@@ -113,18 +113,18 @@ Section 含义:
 ### Notes
 ```
 
-每个新的历史条目:
+每个新的 history entry:
 
 - 使用 `YYYY-MM-DD` 格式的实际条目日期.
 - 使用简短描述性的条目标题.
 - 新增一个二级条目. 不要使用重复的 `Entry Date` 或 `Entry Title` 标题.
-- 同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级历史条目.
+- 同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级 history entries.
 - 显式标记已拒绝和已暂缓项, 例如 `[Rejected]` 或 `[Deferred]`.
 - 显式标记假设, 例如 `[Verified]` 或 `[Unverified]`.
 
 ### Handoff Entry
 
-每次 `handoff` 都向目标 `HISTORY.md` 追加一个 handoff 条目. 使用以下结构:
+每次 `checkpoint-handoff` 都向 target `HISTORY.md` 追加一个 handoff entry. 使用以下结构:
 
 ```md
 ## {YYYY-MM-DD} - Handoff from {source-session-folder}
@@ -148,11 +148,11 @@ Section 含义:
 ### Notes
 ```
 
-Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢弃产物, 引用路径改写, 用户要求的修正, 缺失的可选源文件, 例如 `HISTORY.md`, 以及未解决的不确定性.
+Handoff entry 必须记录 copied checkpoint files, copied artifacts, discarded artifacts, reference path rewrites, user-requested corrections, missing optional source files, 例如 `HISTORY.md`, 以及 unresolved uncertainty.
 
 ## REVIEW.md
 
-`REVIEW.md` 保存某个会话文件夹的最新 `review` 结果. `review` 将其写入被审阅会话文件夹, 并覆盖任何旧的 `REVIEW.md`. 使用以下结构:
+`REVIEW.md` 保存某个会话文件夹的最新 `checkpoint-review` 结果. `checkpoint-review` 将其写入被审阅会话文件夹, 并覆盖任何旧的 `REVIEW.md`. 使用以下结构:
 
 ```md
 # REVIEW.md
@@ -180,13 +180,13 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 
 - `Reviewed Session`: 本次 review 指向的被审阅会话文件夹.
 - `Review Date`: `YYYY-MM-DD` 格式的审阅日期.
-- `Goal Completion`, `Findings`, `Checkpoint Quality`, `Open Questions`, `Summary`: 与 `review.md` 中定义的审阅输出章节含义相同.
+- `Goal Completion`, `Findings`, `Checkpoint Quality`, `Open Questions`, `Summary`: 与 `checkpoint-review` 中定义的审阅输出章节含义相同.
 
 每次创建或更新 `REVIEW.md` 时, 必须同步更新 `Table of Contents`, 确保 TOC 列出所有实际存在的二级章节.
 
-`REVIEW.md` 是 review 产物, 不是 checkpoint 文件. `restore` 将其视为导航提示, 不视为当前状态. `handoff` 默认不复制源会话文件夹的 `REVIEW.md`, 因为它审阅的是源会话文件夹, 不是目标会话文件夹. 如果用户明确要求保留源 `REVIEW.md`, 必须把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder-name}.md`, 不得复制为目标 `REVIEW.md`, 也不得改写其中的 `Reviewed Session`. `{source-session-folder-name}` 只取源会话文件夹的末段名称, 例如 `20260605-example-session`, 不得使用完整路径.
+`REVIEW.md` 是 review artifact, 不是 checkpoint 文件. `checkpoint-restore` 将其视为 navigation hint, 不视为当前状态. `checkpoint-handoff` 默认不复制 source session folder 的 `REVIEW.md`, 因为它审阅的是 source session folder, 不是 target session folder. 如果用户明确要求保留 source `REVIEW.md`, 必须把它复制为非活跃历史文件, 例如 `REVIEW.from-{source-session-folder-name}.md`, 不得复制为 target `REVIEW.md`, 也不得改写其中的 `Reviewed Session`. `{source-session-folder-name}` 只取 source session folder 的末段名称, 例如 `20260605-example-session`, 不得使用完整路径.
 
-`review` 默认用最新审阅结果覆盖写 `REVIEW.md`, 不自动归档旧 review. 如需长期追溯审阅历史, 后续 `update` 可把关键审阅结论写入 `HISTORY.md`.
+`checkpoint-review` 默认用最新审阅结果覆盖写 `REVIEW.md`, 不自动归档旧 review. 如需长期追溯审阅历史, 后续 `checkpoint-save` 可把关键审阅结论写入 `HISTORY.md`.
 
 ### Finding 格式
 
@@ -227,9 +227,9 @@ Handoff entry 必须记录已复制 checkpoint 文件, 已复制产物, 已丢�
 - `Resolved`: 问题已解决, 并已按当前工程事实验证不再成立.
 - `Won't Fix`: 用户或项目决策明确不修复. 必须通过 `Resolution` 说明原因或决策依据.
 
-`restore` 只读 `REVIEW.md`, 不修改 finding 状态. 当已知问题修复完成, 或用户明确拒绝修复时, agent 可以在非 `restore` 流程中帮助更新对应 finding 状态. `update` 不更新 `REVIEW.md`.
+`checkpoint-restore` 只读 `REVIEW.md`, 不修改 finding status. 当已知问题修复完成, 或用户明确拒绝修复时, agent 可以在非 restore 流程中帮助更新对应 finding status. `checkpoint-save` 不更新 `REVIEW.md`.
 
-`Open` finding 如果被验证仍成立, 才可能作为待处理风险在后续 `update` 中纳入 `Known Risks`. `Won't Fix` finding 不进入 `Known Risks`; 它表示已接受的取舍, 应在后续 `update` 中纳入 `Confirmed Decisions`, 必要时在 `HISTORY.md` 记录理由.
+`Open` finding 如果被验证仍成立, 才可能作为待处理风险在后续 `checkpoint-save` 中纳入 `Known Risks`. `Won't Fix` finding 不进入 `Known Risks`; 它表示已接受的取舍, 应在后续 `checkpoint-save` 中纳入 `Confirmed Decisions`, 必要时在 `HISTORY.md` 记录理由.
 
 ### Severity 范围
 
