@@ -1,0 +1,4 @@
+interface:
+  display_name: "Checkpoint Save"
+  short_description: "Save or refresh session checkpoints by writing CONTEXT.md and HISTORY.md"
+  default_prompt: "Use $checkpoint-save to save or refresh the current session checkpoint."

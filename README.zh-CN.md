@@ -89,18 +89,28 @@ SnowyAgentSkills/
 |   |   |-- README.zh-CN.md
 |   |   |-- checkpoint-save/
 |   |   |   |-- SKILL.md
-|   |   |   `-- references/
-|   |   |       |-- common-rules.md
-|   |   |       |-- file-contracts.md
-|   |   |       `-- status-summary.md
+|   |   |   |-- references/
+|   |   |   |   |-- common-rules.md
+|   |   |   |   |-- file-contracts.md
+|   |   |   |   `-- status-summary.md
+|   |   |   `-- agents/
+|   |   |       `-- openai.yaml
 |   |   |-- checkpoint-restore/
-|   |   |   `-- SKILL.md
+|   |   |   |-- SKILL.md
+|   |   |   `-- agents/
+|   |   |       `-- openai.yaml
 |   |   |-- checkpoint-handoff/
-|   |   |   `-- SKILL.md
+|   |   |   |-- SKILL.md
+|   |   |   `-- agents/
+|   |   |       `-- openai.yaml
 |   |   |-- checkpoint-status/
-|   |   |   `-- SKILL.md
+|   |   |   |-- SKILL.md
+|   |   |   `-- agents/
+|   |   |       `-- openai.yaml
 |   |   `-- checkpoint-review/
-|   |       `-- SKILL.md
+|   |       |-- SKILL.md
+|   |       `-- agents/
+|   |           `-- openai.yaml
 |   `-- grill-me/
 |       |-- SKILL.md
 |       `-- agents/
