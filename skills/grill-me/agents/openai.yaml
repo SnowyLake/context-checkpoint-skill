@@ -1,6 +1,6 @@
 interface:
   display_name: "Grill Me"
-  short_description: "Sharpen a plan or design through grilling"
+  short_description: "Grill the user relentlessly about a plan or design."
   default_prompt: "Use $grill-me to sharpen my plan or design."
 
 policy:
