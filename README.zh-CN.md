@@ -9,7 +9,6 @@
   - [checkpoint](#checkpoint)
   - [codex-reset-credits](#codex-reset-credits)
   - [grill-me](#grill-me)
-  - [unity-csfile-organize](#unity-csfile-organize)
 - [新增 Skills](#新增-skills)
 - [仓库结构](#仓库结构)
 
@@ -44,14 +43,6 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 - 简介: Forked from mattpocock/skills. A relentless interview to sharpen a plan or design.
 
 - 文档: [SKILL.md](skills/grill-me/SKILL.md)
-
-- 适用范围: All agents.
-
-### unity-csfile-organize
-
-- 简介: 整理单个已有 Unity C# 文件的 using, 类型, 字段, 回调和函数顺序, 不改变已有行为.
-
-- 文档: [SKILL.md](skills/unity-csfile-organize/SKILL.md)
 
 - 适用范围: All agents.
 
@@ -92,8 +83,7 @@ SnowyAgentSkills/
 |   |   |-- checkpoint-handoff/
 |   |   |-- checkpoint-status/
 |   |   `-- checkpoint-review/
-|   |-- grill-me/
-|   `-- unity-csfile-organize/
+|   `-- grill-me/
 |-- README.md
 |-- README.zh-CN.md
 |-- LICENSE
