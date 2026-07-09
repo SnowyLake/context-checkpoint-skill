@@ -1,0 +1,7 @@
+interface:
+  display_name: "Unity C# File Organize"
+  short_description: "Reorder one Unity C# file without changing behavior."
+  default_prompt: "Use $unity-csfile-organize to reorder this Unity C# file without changing its behavior."
+
+policy:
+  allow_implicit_invocation: false

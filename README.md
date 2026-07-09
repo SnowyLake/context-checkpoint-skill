@@ -9,6 +9,7 @@ Language: English | [中文](README.zh-CN.md)
   - [checkpoint](#checkpoint)
   - [codex-reset-credits](#codex-reset-credits)
   - [grill-me](#grill-me)
+  - [unity-csfile-organize](#unity-csfile-organize)
 - [Add Skills](#add-skills)
 - [Repository Layout](#repository-layout)
 
@@ -43,6 +44,14 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 - Description: Forked from mattpocock/skills. A relentless interview to sharpen a plan or design.
 
 - Documentation: [SKILL.md](skills/grill-me/SKILL.md)
+
+- Agent scope: All agents.
+
+### unity-csfile-organize
+
+- Description: Reorder one existing Unity C# file's using directives, types, fields, callbacks, and methods without changing behavior.
+
+- Documentation: [SKILL.md](skills/unity-csfile-organize/SKILL.md)
 
 - Agent scope: All agents.
 
@@ -83,7 +92,8 @@ SnowyAgentSkills/
 |   |   |-- checkpoint-handoff/
 |   |   |-- checkpoint-status/
 |   |   `-- checkpoint-review/
-|   `-- grill-me/
+|   |-- grill-me/
+|   `-- unity-csfile-organize/
 |-- README.md
 |-- README.zh-CN.md
 |-- LICENSE
