@@ -7,8 +7,10 @@
 - [概览](#概览)
 - [可用 Skills](#可用-skills)
   - [checkpoint](#checkpoint)
-  - [codex-reset-credits](#codex-reset-credits)
   - [grill-me](#grill-me)
+  - [subagent-workflow](#subagent-workflow)
+- [弃用 Skills](#弃用-skills)
+  - [codex-reset-credits](#codex-reset-credits)
 - [新增 Skills](#新增-skills)
 - [仓库结构](#仓库结构)
 
@@ -20,31 +22,33 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 
 ## 可用 Skills
 
-### checkpoint
+### [checkpoint](skills/checkpoint/README.zh-CN.md)
 
 - 简介: checkpoint skill family, 用于在 long-running, multi-session, handoff-based 或 review-driven agent work 中保存, 恢复, 接管, 查看状态和审阅会话上下文.
 
 - Skills: `checkpoint-save`, `checkpoint-restore`, `checkpoint-handoff`, `checkpoint-status`, `checkpoint-review`.
 
-- 文档: [English](skills/checkpoint/README.md), [中文](skills/checkpoint/README.zh-CN.md)
-
 - 适用范围: All agents.
 
-### codex-reset-credits
-
-- 简介: 查询当前 Codex 账户可用的 rate limit reset credits 和过期时间.
-
-- 文档: [English](skills/codex-reset-credits/README.md), [中文](skills/codex-reset-credits/README.zh-CN.md)
-
-- 适用范围: Codex only.
-
-### grill-me
+### [grill-me](skills/grill-me/SKILL.md)
 
 - 简介: Forked from mattpocock/skills. A relentless interview to sharpen a plan or design.
 
-- 文档: [SKILL.md](skills/grill-me/SKILL.md)
-
 - 适用范围: All agents.
+
+### [subagent-workflow](skills/subagent-workflow/SKILL.md)
+
+- 简介: 命令当前 Agent 通过 Subagent 工作流完成用户任务.
+
+- 适用范围: Agents with Subagent support.
+
+## 弃用 Skills
+
+### [codex-reset-credits](deprecated/codex-reset-credits/SKILL.md)
+
+- 简介: 查询当前 Codex 账户可用的 rate limit reset credits 和过期时间.
+
+- 适用范围: Codex only.
 
 ## 新增 Skills
 
@@ -76,14 +80,16 @@ skills/<skill-name>/
 ```text
 SnowyAgentSkills/
 |-- skills/
-|   |-- codex-reset-credits/
 |   |-- checkpoint/
 |   |   |-- checkpoint-save/
 |   |   |-- checkpoint-restore/
 |   |   |-- checkpoint-handoff/
 |   |   |-- checkpoint-status/
 |   |   `-- checkpoint-review/
-|   `-- grill-me/
+|   |-- grill-me/
+|   `-- subagent-workflow/
+|-- deprecated/
+|   `-- codex-reset-credits/
 |-- README.md
 |-- README.zh-CN.md
 |-- LICENSE

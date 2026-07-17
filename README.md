@@ -7,8 +7,10 @@ Language: English | [中文](README.zh-CN.md)
 - [Overview](#overview)
 - [Available Skills](#available-skills)
   - [checkpoint](#checkpoint)
-  - [codex-reset-credits](#codex-reset-credits)
   - [grill-me](#grill-me)
+  - [subagent-workflow](#subagent-workflow)
+- [Deprecated Skills](#deprecated-skills)
+  - [codex-reset-credits](#codex-reset-credits)
 - [Add Skills](#add-skills)
 - [Repository Layout](#repository-layout)
 
@@ -20,31 +22,33 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 
 ## Available Skills
 
-### checkpoint
+### [checkpoint](skills/checkpoint/README.md)
 
 - Description: Checkpoint skill family for saving, restoring, handing off, listing status, and reviewing session context in long-running, multi-session, handoff-based, or review-driven agent work.
 
 - Skills: `checkpoint-save`, `checkpoint-restore`, `checkpoint-handoff`, `checkpoint-status`, `checkpoint-review`.
 
-- Documentation: [English](skills/checkpoint/README.md), [中文](skills/checkpoint/README.zh-CN.md)
-
 - Agent scope: All agents.
 
-### codex-reset-credits
-
-- Description: Query the current Codex account's available rate limit reset credits and expiration times.
-
-- Documentation: [English](skills/codex-reset-credits/README.md), [中文](skills/codex-reset-credits/README.zh-CN.md)
-
-- Agent scope: Codex only.
-
-### grill-me
+### [grill-me](skills/grill-me/SKILL.md)
 
 - Description: Forked from mattpocock/skills. A relentless interview to sharpen a plan or design.
 
-- Documentation: [SKILL.md](skills/grill-me/SKILL.md)
-
 - Agent scope: All agents.
+
+### [subagent-workflow](skills/subagent-workflow/SKILL.md)
+
+- Description: Require the current agent to complete the user's task through a subagent workflow.
+
+- Agent scope: Agents with Subagent support.
+
+## Deprecated Skills
+
+### [codex-reset-credits](deprecated/codex-reset-credits/SKILL.md)
+
+- Description: Query the current Codex account's available rate limit reset credits and expiration times.
+
+- Agent scope: Codex only.
 
 ## Add Skills
 
@@ -76,14 +80,16 @@ Keep each skill self-contained and avoid placing skill-specific documentation in
 ```text
 SnowyAgentSkills/
 |-- skills/
-|   |-- codex-reset-credits/
 |   |-- checkpoint/
 |   |   |-- checkpoint-save/
 |   |   |-- checkpoint-restore/
 |   |   |-- checkpoint-handoff/
 |   |   |-- checkpoint-status/
 |   |   `-- checkpoint-review/
-|   `-- grill-me/
+|   |-- grill-me/
+|   `-- subagent-workflow/
+|-- deprecated/
+|   `-- codex-reset-credits/
 |-- README.md
 |-- README.zh-CN.md
 |-- LICENSE
