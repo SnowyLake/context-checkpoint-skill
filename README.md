@@ -8,7 +8,7 @@ Language: English | [中文](README.zh-CN.md)
 - [Available Skills](#available-skills)
   - [checkpoint](#checkpoint)
   - [grill-me](#grill-me)
-  - [subagent-workflow](#subagent-workflow)
+  - [multi-agent-dispatch](#multi-agent-dispatch)
 - [Deprecated Skills](#deprecated-skills)
   - [codex-reset-credits](#codex-reset-credits)
 - [Add Skills](#add-skills)
@@ -36,9 +36,9 @@ Each skill lives under `skills/<skill-name>/` as a self-contained folder. The re
 
 - Agent scope: All agents.
 
-### [subagent-workflow](skills/subagent-workflow/SKILL.md)
+### [multi-agent-dispatch](skills/multi-agent-dispatch/SKILL.md)
 
-- Description: Require the current agent to complete the user's task through a subagent workflow.
+- Description: Require the current agent to complete the user's task through multi-agent dispatch.
 
 - Agent scope: Agents with Subagent support.
 
@@ -87,7 +87,7 @@ SnowyAgentSkills/
 |   |   |-- checkpoint-status/
 |   |   `-- checkpoint-review/
 |   |-- grill-me/
-|   `-- subagent-workflow/
+|   `-- multi-agent-dispatch/
 |-- deprecated/
 |   `-- codex-reset-credits/
 |-- README.md

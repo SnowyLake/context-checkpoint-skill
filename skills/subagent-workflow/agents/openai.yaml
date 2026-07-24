@@ -1,7 +1,0 @@
-interface:
-  display_name: "Subagent Workflow"
-  short_description: "Delegate the current task through subagents"
-  default_prompt: "Use $subagent-workflow to complete this task through subagents."
-
-policy:
-  allow_implicit_invocation: false

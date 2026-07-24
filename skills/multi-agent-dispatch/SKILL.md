@@ -1,5 +1,5 @@
 ---
-name: subagent-workflow
+name: multi-agent-dispatch
 description: Delegate the current task through subagents.
 disable-model-invocation: true
 ---

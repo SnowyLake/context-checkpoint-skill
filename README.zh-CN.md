@@ -8,7 +8,7 @@
 - [可用 Skills](#可用-skills)
   - [checkpoint](#checkpoint)
   - [grill-me](#grill-me)
-  - [subagent-workflow](#subagent-workflow)
+  - [multi-agent-dispatch](#multi-agent-dispatch)
 - [弃用 Skills](#弃用-skills)
   - [codex-reset-credits](#codex-reset-credits)
 - [新增 Skills](#新增-skills)
@@ -36,9 +36,9 @@ SnowyAgentSkills 是一个可复用 agent skills 集合仓库.
 
 - 适用范围: All agents.
 
-### [subagent-workflow](skills/subagent-workflow/SKILL.md)
+### [multi-agent-dispatch](skills/multi-agent-dispatch/SKILL.md)
 
-- 简介: 命令当前 Agent 通过 Subagent 工作流完成用户任务.
+- 简介: 命令当前 Agent 通过 multi-agent dispatch 完成用户任务.
 
 - 适用范围: Agents with Subagent support.
 
@@ -87,7 +87,7 @@ SnowyAgentSkills/
 |   |   |-- checkpoint-status/
 |   |   `-- checkpoint-review/
 |   |-- grill-me/
-|   `-- subagent-workflow/
+|   `-- multi-agent-dispatch/
 |-- deprecated/
 |   `-- codex-reset-credits/
 |-- README.md
